@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import cmd
 from models.teacher import Teacher
 from models.student import Student
