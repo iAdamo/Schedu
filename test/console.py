@@ -12,7 +12,11 @@ from models.teacher import Teacher
 from models.student import Student
 from models.guardian import Guardian
 
-classes = {"Teacher": Teacher, "Student": Student, "Guardian": Guardian, "Admin": Admin}
+classes = {
+    "Teacher": Teacher,
+    "Student": Student,
+    "Guardian": Guardian,
+    "Admin": Admin}
 
 
 class MGTCommand(cmd.Cmd):
@@ -120,8 +124,8 @@ class MGTCommand(cmd.Cmd):
         print(", ".join(obj_list), end="")
         print("]")
 
-    def do_update(self, arg):
-        """Update an instance based on the class name, id, attribute & value"""
+    """def do_update(self, arg):
+        Update an instance based on the class name, id, attribute & value
         args = shlex.split(arg)
         integers = ["number_rooms", "number_bathrooms", "max_guest",
                     "price_by_night"]
@@ -156,7 +160,7 @@ class MGTCommand(cmd.Cmd):
             else:
                 print("** instance id missing **")
         else:
-            print("** class doesn't exist **")
+            print("** class doesn't exist **")"""
 
 
 if __name__ == '__main__':
