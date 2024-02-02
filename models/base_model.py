@@ -1,68 +1,86 @@
-import uuid
+#!/usr/bin/python3
+"""
+Contains class BaseModel for the School Management System
+"""
+
 from datetime import datetime
+import models
+from os import getenv
+from sqlalchemy import Column, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+import uuid
+
+time = "%Y-%m-%dT%H:%M:%S.%f"
+
+if models.storage_type == "db":
+    Base = declarative_base()
+else:
+    Base = object
+
 
 class BaseModel:
-    """Defines the base model for other classes"""
+    """The BaseModel class from which future classes will be derived"""
+    if models.storage_type == "db":
+        id = Column(String(60), primary_key=True)
+        created_at = Column(DateTime, default=datetime.utcnow)
+        updated_at = Column(DateTime, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
-        """Initialize the base model"""
+        """Initialization of the base model"""
         if kwargs:
             for key, value in kwargs.items():
-                if key == 'created_at' or key == 'updated_at':
-                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                if key != '__class__':
+                if key != "__class__":
                     setattr(self, key, value)
+            if kwargs.get(
+                    "created_at",
+                    None) and isinstance(
+                    self.created_at,
+                    str):
+                self.created_at = datetime.strptime(kwargs["created_at"], time)
+            else:
+                self.created_at = datetime.utcnow()
+            if kwargs.get(
+                    "updated_at",
+                    None) and isinstance(
+                    self.updated_at,
+                    str):
+                self.updated_at = datetime.strptime(kwargs["updated_at"], time)
+            else:
+                self.updated_at = datetime.utcnow()
+            if kwargs.get("id", None) is None:
+                self.id= ""
         else:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            self.id = ""
+            self.created_at = datetime.utcnow()
+            self.updated_at = self.created_at
 
+            
     def __str__(self):
-        """Return string representation of BaseModel"""
-        cls_name = self.__class__.__name__
-        return "[{}] ({}) {}".format(cls_name, self.id, self.__dict__)
+        """String representation of the BaseModel class"""
+        return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
+                                         self.__dict__)
 
     def save(self):
-        """Update updated_at with current datetime and save to storage"""
-        self.updated_at = datetime.now()
-        from models import storage
-        storage.new(self)
-        storage.save()
+        """updates the attribute 'updated_at' with the current datetime"""
+        self.updated_at = datetime.utcnow()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
-        """Return a dictionary representation of BaseModel"""
+        """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()
-        new_dict['__class__'] = self.__class__.__name__
-        new_dict['created_at'] = self.created_at.isoformat()
-        new_dict['updated_at'] = self.updated_at.isoformat()
+        if "created_at" in new_dict:
+            new_dict["created_at"] = new_dict["created_at"].strftime(time)
+        if "updated_at" in new_dict:
+            new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
+        new_dict["__class__"] = self.__class__.__name__
+        if "_sa_instance_state" in new_dict:
+            del new_dict["_sa_instance_state"]
+        if getenv("MGT_TYPE_STORAGE") == "db":
+            if "password" in new_dict:
+                del new_dict["password"]
         return new_dict
 
     def delete(self):
-        """Delete the current instance from storage"""
-        from models import storage
-        storage.delete(self)
-
-    @classmethod
-    def all(cls):
-        """Return a dictionary of all instances of the class"""
-        from models import storage
-        return storage.all(cls)
-
-    @classmethod
-    def count(cls):
-        """Count the number of instances of the class"""
-        from models import storage
-        return storage.count(cls)
-
-    @classmethod
-    def get(cls, id):
-        """Get an instance of the class by its ID"""
-        from models import storage
-        return storage.get(cls, id)
-
-    def update(self, **kwargs):
-        """Update attributes of the instance"""
-        for key, value in kwargs.items():
-            if key != 'id' and key != 'created_at' and key != 'updated_at':
-                setattr(self, key, value)
-        self.save()
+        """delete the current instance from the storage"""
+        models.storage.delete(self)

@@ -1,196 +1,167 @@
 #!/usr/bin/python3
+"""The school Management console
+"""
+
 import cmd
+from datetime import datetime
+from re import A
+import models
+import shlex  # for splitting the line along spaces except in double quotes
+from models.admin import Admin
 from models.teacher import Teacher
 from models.student import Student
 from models.guardian import Guardian
-from models.engines.db_storage import DBStorage
-from models.engines.file_storage import FileStorage
+
+classes = {
+    "Teacher": Teacher,
+    "Student": Student,
+    "Guardian": Guardian,
+    "Admin": Admin}
 
 
-class SchoolManagementConsole(cmd.Cmd):
-    prompt = '(school_mgmt) '
-
-    def __init__(self, storage_type='db'):
-        super().__init__()
-        self.storage_type = storage_type
-        if self.storage_type == 'db':
-            self.storage = DBStorage()
-        elif self.storage_type == 'file':
-            self.storage = FileStorage()
-            self.storage.reload()
-        else:
-            raise ValueError("Invalid storage type. Choose 'db' or 'file'.")
-        self.session = None  # No session attribute in DBStorage
+class MGTCommand(cmd.Cmd):
+    """ SCHEDU console """
+    prompt = '(management) '
 
     def do_EOF(self, arg):
+        """Exits console"""
         return True
 
     def emptyline(self):
-        pass
+        """ overwriting the emptyline method """
+        return False
 
     def do_quit(self, arg):
+        """Quit command to exit the program"""
         return True
 
-    def register_admin(self, username, password):
-        """Register a new admin."""
-        admin = Admin(username=username, password=password)
-        self.storage.new(admin)
-        self.storage.save()
-        print("Admin registered successfully.")
+    def _key_value_parser(self, args):
+        """creates a dictionary from a list of strings"""
+        new_dict = {}
+        for arg in args:
+            if "=" in arg:
+                kvp = arg.split('=', 1)
+                key = kvp[0]
+                value = kvp[1]
+                if value[0] == value[-1] == '"':
+                    value = shlex.split(value)[0].replace('_', ' ')
+                else:
+                    try:
+                        value = int(value)
+                    except BaseException:
+                        try:
+                            value = float(value)
+                        except BaseException:
+                            continue
+                new_dict[key] = value
+        return new_dict
 
-    def register_teacher(self, name, gender, dob, discipline, classroom, phone_number, address, email):
-        """Register a new teacher."""
-        teacher = Teacher(name=name, gender=gender, dob=dob, discipline=discipline,
-                          classroom=classroom, phone_number=phone_number, address=address, email=email)
-        self.storage.new(teacher)
-        self.storage.save()
-        print("Teacher registered successfully.")
-
-    def register_student(self, name, gender, dob, class_name, height, genotype_blood_group, parent_guardian_id):
-        """Register a new student."""
-        student = Student(name=name, gender=gender, dob=dob, class_name=class_name,
-                          height=height, genotype_blood_group=genotype_blood_group, parent_guardian_id=parent_guardian_id)
-        self.storage.new(student)
-        self.storage.save()
-        print("Student registered successfully.")
-
-    def register_guardian(self, name, gender, dob, occupation, child_name, address, phone, email):
-        """Register a new guardian."""
-        guardian = Guardian(name=name, gender=gender, dob=dob, occupation=occupation,
-                            child_name=child_name, address=address, phone=phone, email=email)
-        self.storage.new(guardian)
-        self.storage.save()
-        print("Guardian registered successfully.")
-
-    def show_admins(self):
-        """Show all registered admins."""
-        admins = self.storage.all(Admin)
-        for admin in admins.values():
-            print(admin)
-
-    def show_teachers(self):
-        """Show all registered teachers."""
-        teachers = self.storage.all(Teacher)
-        for teacher in teachers.values():
-            print(teacher)
-
-    def show_students(self):
-        """Show all registered students."""
-        students = self.storage.all(Student)
-        for student in students.values():
-            print(student)
-
-    def show_guardians(self):
-        """Show all registered guardians."""
-        guardians = self.storage.all(Guardian)
-        for guardian in guardians.values():
-            print(guardian)
-
-    def update_admin(self, admin_id, new_password):
-        """Update admin password."""
-        admin = self.storage.get(Admin, admin_id)
-        if admin:
-            admin.password = new_password
-            self.storage.save()
-            print("Admin password updated successfully.")
+    def do_create(self, arg):
+        """Creates a new instance of a class"""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+            return False
+        if args[0] in classes:
+            new_dict = self._key_value_parser(args[1:])
+            instance = classes[args[0]](**new_dict)
         else:
-            print("Admin not found.")
+            print("** class doesn't exist **")
+            return False
+        print(instance.id)
+        instance.save()
 
-    def update_teacher(self, teacher_id, attribute, new_value):
-        """Update teacher information."""
-        teacher = self.storage.get(Teacher, teacher_id)
-        if teacher:
-            setattr(teacher, attribute, new_value)
-            self.storage.save()
-            print("Teacher information updated successfully.")
+    def do_show(self, arg):
+        """Prints an instance as a string based on the class and id"""
+        args = shlex.split(arg)
+        if len(args) == 0:
+            print("** class name missing **")
+            return False
+        if args[0] in classes:
+            if len(args) > 1:
+                key = args[0] + "." + args[1]
+                if key in models.storage.all():
+                    print(models.storage.all()[key])
+                else:
+                    print("** no instance found **")
+            else:
+                print("** instance id missing **")
         else:
-            print("Teacher not found.")
+            print("** class doesn't exist **")
 
-    def update_student(self, student_id, attribute, new_value):
-        """Update student information."""
-        student = self.storage.get(Student, student_id)
-        if student:
-            setattr(student, attribute, new_value)
-            self.storage.save()
-            print("Student information updated successfully.")
+    def do_destroy(self, arg):
+        """Deletes an instance based on the class and id"""
+        args = shlex.split(arg)
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] in classes:
+            if len(args) > 1:
+                key = args[0] + "." + args[1]
+                if key in models.storage.all():
+                    models.storage.all().pop(key)
+                    models.storage.save()
+                else:
+                    print("** no instance found **")
+            else:
+                print("** instance id missing **")
         else:
-            print("Student not found.")
+            print("** class doesn't exist **")
 
-    def update_guardian(self, guardian_id, attribute, new_value):
-        """Update guardian information."""
-        guardian = self.storage.get(Guardian, guardian_id)
-        if guardian:
-            setattr(guardian, attribute, new_value)
-            self.storage.save()
-            print("Guardian information updated successfully.")
+    def do_all(self, arg):
+        """Prints string representations of instances"""
+        args = shlex.split(arg)
+        obj_list = []
+        if len(args) == 0:
+            obj_dict = models.storage.all()
+        elif args[0] in classes:
+            obj_dict = models.storage.all(classes[args[0]])
         else:
-            print("Guardian not found.")
+            print("** class doesn't exist **")
+            return False
+        for key in obj_dict:
+            obj_list.append(str(obj_dict[key]))
+        print("[", end="")
+        print(", ".join(obj_list), end="")
+        print("]")
 
-    def delete_admin(self, admin_id):
-        """Delete admin."""
-        admin = self.storage.get(Admin, admin_id)
-        if admin:
-            self.storage.delete(admin)
-            self.storage.save()
-            print("Admin deleted successfully.")
+    """def do_update(self, arg):
+        Update an instance based on the class name, id, attribute & value
+        args = shlex.split(arg)
+        integers = ["number_rooms", "number_bathrooms", "max_guest",
+                    "price_by_night"]
+        floats = ["latitude", "longitude"]
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] in classes:
+            if len(args) > 1:
+                k = args[0] + "." + args[1]
+                if k in models.storage.all():
+                    if len(args) > 2:
+                        if len(args) > 3:
+                            if args[0] == "Place":
+                                if args[2] in integers:
+                                    try:
+                                        args[3] = int(args[3])
+                                    except BaseException:
+                                        args[3] = 0
+                                elif args[2] in floats:
+                                    try:
+                                        args[3] = float(args[3])
+                                    except BaseException:
+                                        args[3] = 0.0
+                            setattr(models.storage.all()[k], args[2], args[3])
+                            models.storage.all()[k].save()
+                        else:
+                            print("** value missing **")
+                    else:
+                        print("** attribute name missing **")
+                else:
+                    print("** no instance found **")
+            else:
+                print("** instance id missing **")
         else:
-            print("Admin not found.")
+            print("** class doesn't exist **")"""
 
-    def delete_teacher(self, teacher_id):
-        """Delete teacher."""
-        teacher = self.storage.get(Teacher, teacher_id)
-        if teacher:
-            self.storage.delete(teacher)
-            self.storage.save()
-            print("Teacher deleted successfully.")
-        else:
-            print("Teacher not found.")
-
-    def delete_student(self, student_id):
-        """Delete student."""
-        student = self.storage.get(Student, student_id)
-        if student:
-            self.storage.delete(student)
-            self.storage.save()
-            print("Student deleted successfully.")
-        else:
-            print("Student not found.")
-
-    def delete_guardian(self, guardian_id):
-        """Delete guardian."""
-        guardian = self.storage.get(Guardian, guardian_id)
-        if guardian:
-            self.storage.delete(guardian)
-            self.storage.save()
-            print("Guardian deleted successfully.")
-        else:
-            print("Guardian not found.")
-
-    def close(self):
-        """Close the console"""
-        self.storage.close()
-        print("Goodbye!")
-        return True
-
-    def default(self, line):
-        print("Invalid command. Here's what you can do:")
-        print("- To register a new admin, use: register_admin <username> <password>")
-        print("- To register a new teacher, use: register_teacher <name> <gender> <dob> <discipline> <classroom> <phone_number> <address> <email>")
-        print("- To register a new student, use: register_student <name> <gender> <dob> <class_name> <height> <genotype_blood_group> <parent_guardian_id>")
-        print("- To register a new guardian, use: register_guardian <name> <gender> <dob> <occupation> <child_name> <address> <phone> <email>")
-        print("- To show all admins, use: show_admins")
-        print("- To show all teachers, use: show_teachers")
-        print("- To show all students, use: show_students")
-        print("- To show all guardians, use: show_guardians")
-        print("- To update an admin's password, use: update_admin <admin_id> <new_password>")
-        print("- To update a teacher's information, use: update_teacher <teacher_id> <attribute> <new_value>")
-        print("- To update a student's information, use: update_student <student_id> <attribute> <new_value>")
-        print("- To update a guardian's information, use: update_guardian <guardian_id> <attribute> <new_value>")
-        print("- To delete an admin, use: delete_admin <admin_id>")
-        print("- To delete a teacher, use: delete_teacher <teacher_id>")
-        print("- To delete a student, use: delete_student <student_id>")
-        print("- To delete a guardian, use: delete_guardian <guardian_id>")
-        print("- Type 'help' for a list of commands")
 
 if __name__ == '__main__':
-    SchoolManagementConsole().cmdloop()
+    MGTCommand().cmdloop()

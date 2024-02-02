@@ -1,30 +1,37 @@
-from sqlalchemy import Column, String, Integer, ForeignKey
+#!/usr/bin/python3
+"""holds class Student
+"""
+import models
+from models.base_model import BaseModel, Base
+from os import getenv
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel
 
-class Student(BaseModel):
-    """Model representing a student."""
 
-    __tablename__ = 'students'
+class Student(BaseModel, Base):
+    """Representation of student
+    """
+    count = 0
+    
+    if models.storage_type == "db":
+        __tablename__ = 'students'
+        id = Column(String(60), nullable=False, primary_key=True)
+        name = Column(String(128), nullable=False)
+        grade = Column(String(128), nullable=False)
+        email = Column(String(128), nullable=False)
+    else:
+        id = ""
+        name = ""
+        grade = ""
+        email = ""
+        nin = ""
+        phone_number = ""
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
-    gender = Column(String(10), nullable=False)
-    dob = Column(String(20), nullable=False)
-    class_name = Column(String(100), nullable=False)
-    height = Column(String(20))
-    genotype_blood_group = Column(String(50))
-    parent_guardian_id = Column(Integer, ForeignKey('guardians.id'))
-
-    # Define relationship with Guardian model
-    guardian = relationship("Guardian", back_populates="students")
-
-    def __init__(self, name, gender, dob, class_name, height=None, genotype_blood_group=None, parent_guardian_id=None):
-        super().__init__()
-        self.name = name
-        self.gender = gender
-        self.dob = dob
-        self.class_name = class_name
-        self.height = height
-        self.genotype_blood_group = genotype_blood_group
-        self.parent_guardian_id = parent_guardian_id
+    def __init__(self, *args, **kwargs):
+        """initializes student
+        """
+        super().__init__(*args, **kwargs)
+        first_name = kwargs.get("first_name", "")
+        from models import storage
+        count = len(storage.all("Student"))
+        self.id = f"schedu-student-{first_name[:3]}-{str(count).zfill(4)}".lower()

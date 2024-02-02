@@ -1,32 +1,30 @@
-from sqlalchemy import Column, String, Integer
+#!/usr/bin/python3
+""" holds class Teacher"""
+import models
+from models.base_model import BaseModel, Base
+from os import getenv
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel
 
-class Teacher(BaseModel):
-    """Model representing a teacher."""
 
-    __tablename__ = 'teachers'
+class Teacher(BaseModel, Base):
+    """Representation of teacher"""
+    if models.storage_type == "db":
+        __tablename__ = 'teachers'
+        id = Column(String(60), nullable=False, primary_key=True)
+        name = Column(String(128), nullable=False)
+        subject = Column(String(128), nullable=False)
+        email = Column(String(128), nullable=False)
+    else:
+        id = ""
+        name = ""
+        subject = ""
+        email = ""
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
-    gender = Column(String(10), nullable=False)
-    dob = Column(String(20), nullable=False)
-    discipline = Column(String(100), nullable=False)
-    classroom = Column(String(100), nullable=False)
-    phone_number = Column(String(20))
-    address = Column(String(255))
-    email = Column(String(100))
-
-    # Define relationship with Student model
-    students = relationship("Student", back_populates="teacher")
-
-    def __init__(self, name, gender, dob, discipline, classroom, phone_number=None, address=None, email=None):
-        super().__init__()
-        self.name = name
-        self.gender = gender
-        self.dob = dob
-        self.discipline = discipline
-        self.classroom = classroom
-        self.phone_number = phone_number
-        self.address = address
-        self.email = email
+    def __init__(self, *args, **kwargs):
+        """initializes teacher"""
+        super().__init__(*args, **kwargs)
+        first_name = kwargs.get("first_name", "")
+        from models import storage
+        count = len(storage.all("Teacher"))
+        self.id = f"schedu-teacher-{first_name[:3]}-{str(count).zfill(4)}".lower()
