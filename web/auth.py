@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-"""login.py - login page for the web application
+"""auth page for the web application
 """
 
-from flask_login import login_user
+import os
+from flask_login import LoginManager, login_user
 from models import storage
 from models.admin import Admin
 from models.teacher import Teacher
@@ -18,6 +19,9 @@ from flask_login import login_required, current_user, logout_user
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+login_manager.login_view = '/auth/sign_in'
 
 
 class LoginForm(FlaskForm):
@@ -63,10 +67,10 @@ def authenticate_user(id, password):
 @app.route('/', strict_slashes=False)
 def index():
     """Handle the index route"""
-    return redirect(url_for('auth/sign_in'))
+    return redirect('/auth/sign_in')
 
 
-@app.route('/dashboard/admin', strict_slashes=False)
+@app.route('/admin', strict_slashes=False)
 @login_required
 def admin_dashboard():
     """Handle the admin dashboard route
@@ -75,13 +79,13 @@ def admin_dashboard():
     admin = storage.get(Admin, current_user.id)
     if admin is None:
         flash('No Admin found for the given id', 'error')
-        return redirect(url_for('auth/sign_in'))
+        return redirect('/auth/sign_in')
 
     # Render the admin dashboard
     return render_template('admin.html', admin=admin)
 
 
-@app.route('/dashboard/teacher', strict_slashes=False)
+@app.route('/teacher', strict_slashes=False)
 @login_required
 def teacher_dashboard():
     """Handle the teacher dashboard route
@@ -89,11 +93,11 @@ def teacher_dashboard():
     teacher = storage.get(Teacher, current_user.id)
     if teacher is None:
         flash('No Teacher found for the given id', 'error')
-        return redirect(url_for('auth/sign_in'))
+        return redirect('/auth/sign_in')
     return render_template('teacher.html', teacher=teacher)
 
 
-@app.route('/dashboard/student', strict_slashes=False)
+@app.route('/student', strict_slashes=False)
 @login_required
 def student_dashboard():
     """Handle the student dashboard route
@@ -101,11 +105,11 @@ def student_dashboard():
     student = storage.get(Student, current_user.id)
     if student is None:
         flash('No Student found for the given id', 'error')
-        return redirect(url_for('auth/sign_in'))
+        return redirect('/auth/sign_in')
     return render_template('student.html', student=student)
 
 
-@app.route('/dashboard/guardian', strict_slashes=False)
+@app.route('/guardian', strict_slashes=False)
 @login_required
 def guardian_dashboard():
     """Handle the guardian dashboard route
@@ -113,7 +117,7 @@ def guardian_dashboard():
     guardian = storage.get(Guardian, current_user.id)
     if guardian is None:
         flash('No Guardian found for the given id', 'error')
-        return redirect(url_for('auth/sign_in'))
+        return redirect('/auth/sign_in')
     return render_template('guardian.html', guardian=guardian)
 
 
@@ -136,12 +140,12 @@ def login():
         id = form.id.data
         password = form.password.data
 
-        user, user_type = authenticate_user(id, password)
+        user, route = authenticate_user(id, password)
 
         if user:
             flash('Login successful!', 'success')
             login_user(user)
-            return redirect(url_for(f'/dashboard/{user_type}'))
+            return redirect(f"/{route}")
         else:
             flash('Invalid ID or password', 'error')
 
@@ -150,4 +154,4 @@ def login():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
