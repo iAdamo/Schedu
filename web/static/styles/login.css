@@ -1,0 +1,38 @@
+.body {
+  margin: 0px;
+  padding: 0px;
+}
+.logged_form {
+  background-color: #f8f9fa;
+  border: 1px solid #e7e7e7;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px #eee;
+  margin: 50px auto;
+  max-width: 300px;
+  padding: 50px;
+  text-align: center;
+  width: 100%;
+}
+
+h2.school_logo {
+  background: url(#) no-repeat center;
+  background-size: contain;
+  height: 30px;
+}
+
+
+
+.logged_form ul#devise_links {
+  list-style: none;
+  margin-bottom: 0;
+  margin-top: 30px;
+  padding-left: 0;
+}
+.gap {
+  margin-top: 50px !important;
+}
+
+a {
+  color: #db3e3e;
+  text-decoration: none;
+}

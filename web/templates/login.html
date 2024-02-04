@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sessions new | Management</title>
+  <link rel="stylesheet" href="../static/styles/login.css">
+</head>
+<body>
+  <main>
+    <article>
+      <div class="logged_form">
+        <h2 class="school_logo"></h2>
+        <form method="post" action="/auth/sign_in">
+          <!-- Other form fields (e.g., username and password) go here -->
+          <!-- CSRF Token -->
+          <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+          <!-- School ID field -->
+          <div class="field">
+            <label class="label-control" for="user_id">School ID</label>
+            <br>
+            <input autofocus="autofocus" class="form-control" type="text" name="id" id="user_id">
+          </div>
+
+          <!-- Password field -->
+          <div class="field">
+            <label class="control-label" for="user_password">Password</label>
+            <br>
+            <input autocomplete="off" class="form-control" type="password" name="password" id="user_password">
+          </div>
+
+          <!-- Remember me checkbox -->
+          <div class="field">
+            <input name="remember_me" type="hidden" value="0">
+            <input type="checkbox" value="1" name="remember_me" id="user_remember_me">
+            <label class="control-label" for="user_remember_me">Remember me</label>
+          </div>
+          
+          <!-- Submit button -->
+          <div class="actions">
+            <input type="submit" name="submit" value="Log in" class="btn btn-primary" data-disable-with="Log in">
+          </div>
+        </form>
+
+        <!-- Forget password -->
+        <ul id="devise_links" class="gap">
+          <li>
+            <a href="/auth/password/new">Forgot your password?</a>
+          </li>
+        </ul>
+      </div>
+    </article>
+    <div class="copyright">Copyright © 2024 Schedu Team, All rights reserved.</div>
+  </main>
+  
+</body>
+</html>

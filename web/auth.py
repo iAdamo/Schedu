@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-"""auth page for the web application
+"""login.py - login page for the web application
 """
 
+from math import e
 import os
 from flask_login import LoginManager, login_user
 from models import storage
@@ -15,13 +16,15 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
 from flask_bcrypt import Bcrypt
 from flask_login import login_required, current_user, logout_user
+from flask_wtf.csrf import CSRFProtect
 
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
+csrf = CSRFProtect(app)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-login_manager.login_view = '/auth/sign_in'
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 class LoginForm(FlaskForm):
@@ -30,6 +33,38 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
+@login_manager.user_loader 
+def load_user(user_id):
+    """Load user from the database
+    """
+    try:
+        users = {
+            'admin': Admin,
+            'teacher': Teacher,
+            'student': Student,
+            'guardian': Guardian
+        }
+        parts = user_id.split('-')
+        user_type = parts[1]
+        user = users.get(user_type, None)
+        if user is None:
+            return None
+        return storage.get(user, user_id)
+    except Exception as e:
+        # Log the exception or print it for debugging
+        print(f"Error during user retrieval: {e}")
+        return None
+
+
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    flash('You must be logged in to access this page.', 'error')
+    return redirect('/auth/sign_in')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    flash('Page not found. Please check the URL and try again.', 'error')
+    return redirect('https://github.com/ibhkh')
 
 def authenticate_user(id, password):
     """Authenticate user based on user type, ID, and password
@@ -82,6 +117,7 @@ def admin_dashboard():
         return redirect('/auth/sign_in')
 
     # Render the admin dashboard
+    return redirect('https://google.com')
     return render_template('admin.html', admin=admin)
 
 
@@ -132,13 +168,15 @@ def logout():
 
 
 @app.route('/auth/sign_in', methods=['GET', 'POST'], strict_slashes=False)
-def login():
-    """Handle the login route"""
+def sign_in():
+    """Handle the sign_in route"""
     form = LoginForm()
-
+    
     if form.validate_on_submit():
         id = form.id.data
+        print(id)
         password = form.password.data
+        print(password)
 
         user, route = authenticate_user(id, password)
 
@@ -149,7 +187,7 @@ def login():
         else:
             flash('Invalid ID or password', 'error')
 
-    return render_template('sign_in.html', form=form)
+    return render_template('login.html', form=form)
 
 
 
