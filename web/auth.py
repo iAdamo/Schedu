@@ -68,7 +68,6 @@ def unauthorized_callback():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    flash('Page not found. Please check the URL and try again.', 'error')
     return redirect('https://github.com/ibhkh')
 
 
