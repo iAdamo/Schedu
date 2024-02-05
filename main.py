@@ -14,7 +14,6 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
-
 def id_generator(first_name, cls, num):
     """generates school ids
     """
@@ -28,6 +27,7 @@ def get_user_by_nin(nin):
         if isinstance(obj, (Teacher, Student)) and obj.nin == nin:
             return obj
     return None
+
 
 print("-- Create a new Admin --")
 admin = Admin()
@@ -66,7 +66,7 @@ if not get_user_by_nin(student.nin):
     student.guardian_first_name = "Big"
     student.guardian_last_name = "Fat"
     student.id = id_generator(
-    student.first_name, Student, len(
+        student.first_name, Student, len(
             storage.all(Student)))
     student.save()
     print(student)

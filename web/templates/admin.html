@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Management</title>
+</head>
+<body>
+    <form method="post" action="/auth/sign_out">
+        <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+        <input type="submit" value="Logout">
+    </form>
+    <h1>Admin</h1> 
+    <p> Welcome to the admin page</p>
+    <p> You are logged in as {{ current_user.first_name }}</p>
+    <p> Your email is {{ current_user.email }}</p>
+    <p> Your role is {{ current_user.role }}</p>
+    <p> Your id is {{ current_user.id }}</p> 
+</body>
+</html>

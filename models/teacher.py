@@ -1,30 +1,39 @@
 #!/usr/bin/python3
-""" holds class Teacher"""
+"""Holds class Teacher
+"""
+
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin
 
-
-class Teacher(BaseModel, Base):
-    """Representation of teacher"""
+class Teacher(UserMixin, BaseModel, Base):
+    """Representation of teacher
+    """
     if models.storage_type == "db":
         __tablename__ = 'teachers'
         id = Column(String(60), nullable=False, primary_key=True)
         name = Column(String(128), nullable=False)
+        email = Column(String(128), nullable=False, unique=True)
         subject = Column(String(128), nullable=False)
-        email = Column(String(128), nullable=False)
     else:
         id = ""
         name = ""
-        subject = ""
         email = ""
+        subject = ""
 
     def __init__(self, *args, **kwargs):
-        """initializes teacher"""
+        """Initializes teacher
+        """
         super().__init__(*args, **kwargs)
         first_name = kwargs.get("first_name", "")
         from models import storage
         count = len(storage.all("Teacher"))
-        self.id = f"schedu-teacher-{first_name[:3]}-{str(count).zfill(4)}".lower()
+        self.id = f"schedu-teacher-{first_name[:3]}-{count:04}".lower()
+
+    def is_active(self):
+        """Return True if the user account is active, and False otherwise
+        """
+        return True

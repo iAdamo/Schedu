@@ -3,14 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sessions new | Management</title>
+  <title>Sessions new | Schedu</title>
   <link rel="stylesheet" href="../static/styles/login.css">
 </head>
 <body>
   <main>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
     <article>
       <div class="logged_form">
-        <h2 class="school_logo"></h2>
+        <div class="logo"></div>
         <form method="post" action="/auth/sign_in">
           <!-- Other form fields (e.g., username and password) go here -->
           <!-- CSRF Token -->
@@ -19,14 +28,14 @@
           <div class="field">
             <label class="label-control" for="user_id">School ID</label>
             <br>
-            <input autofocus="autofocus" class="form-control" type="text" name="id" id="user_id">
+            <input autofocus="autofocus" class="form-control" type="text" name="id" id="user_id" value="{{ id }}">
           </div>
 
           <!-- Password field -->
           <div class="field">
             <label class="control-label" for="user_password">Password</label>
             <br>
-            <input autocomplete="off" class="form-control" type="password" name="password" id="user_password">
+            <input autocomplete="off" class="form-control" type="password" name="password" id="user_password" value="{{ password }}">
           </div>
 
           <!-- Remember me checkbox -->
@@ -52,6 +61,7 @@
     </article>
     <div class="copyright">Copyright © 2024 Schedu Team, All rights reserved.</div>
   </main>
+  
   
 </body>
 </html>

@@ -1,24 +1,25 @@
 #!/usr/bin/python3
-"""holds class Student
-"""
+""" Holds class Student """
+
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin  # Assuming UserMixin is required for authentication
 
-
-class Student(BaseModel, Base):
+class Student(UserMixin, BaseModel, Base):
     """Representation of student
     """
-    count = 0
-    
+
     if models.storage_type == "db":
         __tablename__ = 'students'
         id = Column(String(60), nullable=False, primary_key=True)
         name = Column(String(128), nullable=False)
         grade = Column(String(128), nullable=False)
-        email = Column(String(128), nullable=False)
+        email = Column(String(128), nullable=False, unique=True)
+        guardian_id = Column(String(60), ForeignKey('guardians.id'))
+        guardian = relationship("Guardian", backref="students")
     else:
         id = ""
         name = ""
@@ -28,10 +29,14 @@ class Student(BaseModel, Base):
         phone_number = ""
 
     def __init__(self, *args, **kwargs):
-        """initializes student
-        """
+        """ Initializes student """
         super().__init__(*args, **kwargs)
         first_name = kwargs.get("first_name", "")
         from models import storage
         count = len(storage.all("Student"))
-        self.id = f"schedu-student-{first_name[:3]}-{str(count).zfill(4)}".lower()
+        self.id = f"schedu-student-{first_name[:3]}-{count:04}".lower()
+
+    def is_active(self):
+        """Return True if the user account is active, and False otherwise
+        """
+        return True

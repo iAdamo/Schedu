@@ -2,6 +2,7 @@
 """login.py - login page for the web application
 """
 
+import logging
 from math import e
 import os
 from flask_login import LoginManager, login_user
@@ -10,21 +11,24 @@ from models.admin import Admin
 from models.teacher import Teacher
 from models.student import Student
 from models.guardian import Guardian
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, abort, render_template, redirect, request, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
 from flask_bcrypt import Bcrypt
 from flask_login import login_required, current_user, logout_user
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, CSRFError
 
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 csrf = CSRFProtect(app)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = os.environ.get(
+    'SECRET_KEY', 'your_fallback_secret_key')
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class LoginForm(FlaskForm):
@@ -33,7 +37,8 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
-@login_manager.user_loader 
+
+@login_manager.user_loader
 def load_user(user_id):
     """Load user from the database
     """
@@ -58,13 +63,23 @@ def load_user(user_id):
 
 @login_manager.unauthorized_handler
 def unauthorized_callback():
-    flash('You must be logged in to access this page.', 'error')
     return redirect('/auth/sign_in')
+
 
 @app.errorhandler(404)
 def page_not_found(e):
     flash('Page not found. Please check the URL and try again.', 'error')
     return redirect('https://github.com/ibhkh')
+
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    if request.path == '/auth/sign_in':  # Check if the error occurred on the login page
+        flash('Your session has expired', 'error')
+        return redirect('/auth/sign_in')
+    else:
+        abort(400)
+
 
 def authenticate_user(id, password):
     """Authenticate user based on user type, ID, and password
@@ -90,7 +105,9 @@ def authenticate_user(id, password):
             user = storage.get(Guardian, id)
 
         # Check if user exists and verify password
-        if user and bcrypt.check_password_hash(user.password, password):
+        # if user and bcrypt.check_password_hash(user.password, password):
+        #     return user, user_type
+        if user and user.password == password:
             return user, user_type
     except Exception as e:
         # Log the exception or print it for debugging
@@ -115,10 +132,11 @@ def admin_dashboard():
     if admin is None:
         flash('No Admin found for the given id', 'error')
         return redirect('/auth/sign_in')
+    
+    form = LoginForm()  # create an instance of FlaskForm
 
     # Render the admin dashboard
-    return redirect('https://google.com')
-    return render_template('admin.html', admin=admin)
+    return render_template('admin.html', admin=admin, form=form)
 
 
 @app.route('/teacher', strict_slashes=False)
@@ -157,38 +175,40 @@ def guardian_dashboard():
     return render_template('guardian.html', guardian=guardian)
 
 
-@app.route('/logout', strict_slashes=False)
+@app.route('/auth/sign_out', methods=['POST'], strict_slashes=False)
 @login_required
-def logout():
-    """Handle the logout route
-    """
+def sign_out():
+    """Handle the sign_out route"""
+    form = LoginForm()  # create an instance of FlaskForm
     logout_user()
-    flash('You have been logged out', 'info')
-    return redirect('/auth/sign_in')
+    flash('You have been logged out', 'success')
+    return render_template('login.html', form=form)  # pass the form to the template
 
 
 @app.route('/auth/sign_in', methods=['GET', 'POST'], strict_slashes=False)
 def sign_in():
     """Handle the sign_in route"""
+    if current_user.is_authenticated:
+        # Redirect user to their dashboard or another page
+        return redirect(f"/{current_user.__class__.__name__.lower()}")
+
     form = LoginForm()
-    
+
     if form.validate_on_submit():
         id = form.id.data
-        print(id)
         password = form.password.data
-        print(password)
 
         user, route = authenticate_user(id, password)
 
         if user:
-            flash('Login successful!', 'success')
             login_user(user)
             return redirect(f"/{route}")
         else:
             flash('Invalid ID or password', 'error')
+            return render_template(
+                'login.html', form=form, id=id, password=password)
 
     return render_template('login.html', form=form)
-
 
 
 if __name__ == '__main__':
