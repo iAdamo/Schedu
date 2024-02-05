@@ -48,13 +48,12 @@ class BaseModel:
             else:
                 self.updated_at = datetime.utcnow()
             if kwargs.get("id", None) is None:
-                self.id= ""
+                self.id = ""
         else:
             self.id = ""
             self.created_at = datetime.utcnow()
             self.updated_at = self.created_at
 
-            
     def __str__(self):
         """String representation of the BaseModel class"""
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,

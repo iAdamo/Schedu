@@ -7,6 +7,7 @@ from os import getenv
 from flask_login import UserMixin
 from sqlalchemy import Column, String
 
+
 class Admin(UserMixin, BaseModel, Base):
     """ Representation of admin """
     if models.storage_type == "db":
@@ -28,7 +29,8 @@ class Admin(UserMixin, BaseModel, Base):
         first_name = kwargs.get("first_name", "")
         from models import storage
         count = len(storage.all("Admin"))
-        self.id = f"schedu-admin-{first_name[:3]}-{str(count).zfill(4)}".lower()
+        self.id = f"schedu-admin-{first_name[:3]}-{str(count).zfill(4)}".lower(
+        )
 
     def is_active(self):
         """ Return True if the user account is active, and False otherwise """

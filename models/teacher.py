@@ -9,6 +9,7 @@ from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 
+
 class Teacher(UserMixin, BaseModel, Base):
     """Representation of teacher
     """

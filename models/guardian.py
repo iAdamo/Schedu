@@ -7,7 +7,9 @@ from models.student import Student
 from os import getenv
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from flask_login import UserMixin  # Assuming UserMixin is required for authentication
+# Assuming UserMixin is required for authentication
+from flask_login import UserMixin
+
 
 class Guardian(UserMixin, BaseModel, Base):
     """ Representation of guardian """
@@ -16,7 +18,10 @@ class Guardian(UserMixin, BaseModel, Base):
         id = Column(String(60), nullable=False, primary_key=True)
         name = Column(String(128), nullable=False)
         email = Column(String(128), nullable=False, unique=True)
-        student_id = Column(String(60), ForeignKey('students.id'), nullable=False)
+        student_id = Column(
+            String(60),
+            ForeignKey('students.id'),
+            nullable=False)
         student = relationship("Student", backref="guardian")
     else:
         id = ""

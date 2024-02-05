@@ -6,7 +6,9 @@ from models.base_model import BaseModel, Base
 from os import getenv
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from flask_login import UserMixin  # Assuming UserMixin is required for authentication
+# Assuming UserMixin is required for authentication
+from flask_login import UserMixin
+
 
 class Student(UserMixin, BaseModel, Base):
     """Representation of student
