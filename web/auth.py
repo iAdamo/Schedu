@@ -5,11 +5,19 @@
 import os
 from flask_login import LoginManager, login_user
 from models import storage
+from models import teacher
 from models.admin import Admin
 from models.teacher import Teacher
 from models.student import Student
 from models.guardian import Guardian
-from flask import Flask, abort, make_response, render_template, redirect, request, flash
+from flask import (
+    Flask,
+    abort,
+    make_response,
+    render_template,
+    redirect,
+    request,
+    flash)
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
@@ -72,8 +80,13 @@ def page_not_found(e):
 
 @app.errorhandler(CSRFError)
 def handle_csrf_error(e):
-    # Check if the error occurred on the login page
     if request.path == '/auth/sign_in':
+        flash('Your session has expired', 'error')
+        return redirect('/auth/sign_in')
+    elif request.path == '/auth/sign_out':
+        flash('Your session has expired', 'error')
+        return redirect('/auth/sign_in')
+    elif request.path == '/':
         flash('Your session has expired', 'error')
         return redirect('/auth/sign_in')
     else:
@@ -121,8 +134,9 @@ def index():
     """Handle the index route
     """
     form = LoginForm()
+    user = current_user
 
-    return render_template(f"/{current_user.role}.html", form=form)
+    return render_template(f"/{current_user.role}.html", user=user, form=form)
 
 
 @app.route('/auth/sign_out', methods=['POST'], strict_slashes=False)
@@ -131,7 +145,6 @@ def sign_out():
     """Handle the sign_out route"""
     if not current_user.is_authenticated:
         return redirect(f"/auth/sign_in")
-    form = LoginForm()  # create an instance of FlaskForm
     logout_user()
     flash('You have been logged out', 'success')
     return redirect(f"/auth/sign_in")
@@ -142,6 +155,7 @@ def sign_in():
     """Handle the sign_in route"""
     if current_user.is_authenticated:
         # Redirect user to their dashboard or another page
+        flash('You are already signed in')
         return redirect(f"/")
 
     form = LoginForm()
@@ -154,8 +168,10 @@ def sign_in():
 
         if user:
             login_user(user)
+            flash('You have been logged in', 'success')
             response = make_response(redirect(f"/"))
-            response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+            response.headers['Cache-Control'] = (
+                'no-cache, no-store, must-revalidate')
             return response
         else:
             flash('Invalid ID or password', 'error')

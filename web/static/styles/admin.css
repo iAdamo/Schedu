@@ -1,0 +1,168 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+}
+
+.flashes {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+  }
+  
+.flashes li {
+    background-color: #dedff2;
+    color: #4942a9;
+    border-color: #cecceb;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+
+#top_nav {
+    padding: 0px;
+    height: 50px;
+    width: 100%;
+    background-color: #ffff;
+    box-shadow: 0px 5px 5px 5px #eee;
+}
+#profile{
+  list-style: none;
+  color: #838383;
+  float: right;
+  padding: 10px;
+  cursor: pointer;
+  margin: 5px 50px 0px 0px;
+  font-weight: bold;
+  }
+
+#profile-content {
+  display: none;
+  list-style-type: none;
+  padding: 0px;
+  margin: 0;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+#profile:hover #profile-content {
+  display: block;
+}
+
+.profile-button, .logout-form {
+    background-color: transparent;
+    color: #4b4a4a;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+.logo {
+    background: url(../../static/images/schedu.png) no-repeat center;
+    background-size: 100px;
+    background-color: #ffff;
+    height: 50px;
+    width: 180px;
+    border-right: 1px solid #e7e7e7;
+    box-shadow: 5px 5px 5px 5px #eee;
+    cursor: pointer;
+}
+.logo:active {
+    background-color: #fff;
+    box-shadow: 5px 5px 5px 5px transparent;
+}
+.side_bar {
+    background-color: #ffff;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 180px;
+    border-right: 2px solid #e7e7e7;
+
+}
+.card_container {
+    background-color: transparent;
+    display: flex;
+    align-items: flex-start; /* Adjust as needed */
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin: 13px 50px 0px 200px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.card {
+    height: 120px;
+    width: 220px;
+    box-shadow: 5px 5px 5px 5px #eee;
+    margin-left: 25px;
+    word-wrap: break-word;
+    position: relative;
+  }
+.card1 {
+    background-color: rgb(236, 194, 194);
+}
+
+.card2 {
+    background-color: rgb(174, 174, 224);
+}
+
+.card3 {
+    background-color: rgb(190, 228, 190);
+}
+
+.card4 {
+    background-color: rgb(241, 241, 199);
+}
+.card h2 {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
+}
+.card h1.student, h1.b, h1.c, h1.d {
+    margin: 0px;
+    padding: 0px;
+    color: red;
+    font-size: 45px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+  }
+
+.menu ul li {
+    list-style-type: none;
+    margin: 3px 0px 0px -40px;
+    padding: 5px 0px 10px 30px;
+    width: 150px;
+}
+
+.menu ul li:hover {
+  background-color: #fff;
+  box-shadow: 3px 3px 3px 3px #eee;
+  font-weight: bold;
+}
+.menu ul li:active {
+  background-color: #eee;
+  box-shadow: 5px 5px 5px 5px transparent;
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #2e2b57d3;
+    font-size: 17px;
+
+}
+.dropdown-content {
+  background-color: transparent;
+  margin: 0px 0px 0px -40px;
+  width: 150px;
+  }
+
+.material-icons {
+  display: inline-block;
+  color: #838383;
+  position: absolute;
+  top: 105px;
+  margin-left: 35px;
+}

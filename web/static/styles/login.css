@@ -11,8 +11,8 @@ article {
 }
 
 .logo {
-  background: url(../../static/images/schedu3.png) no-repeat center;
-  background-size: contain;
+  background: url(../../static/images/schedu.png) no-repeat center;
+  background-size: 70%;
   height: 80px;
 }
 

@@ -41,4 +41,6 @@ class Student(UserMixin, BaseModel, Base):
     def is_active(self):
         """Return True if the user account is active, and False otherwise
         """
-        return True
+        if self.active:
+            return True
+        return False

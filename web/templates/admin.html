@@ -3,19 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Management</title>
+    <title>Admin dashboard | Management</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <link rel="stylesheet" href="../static/styles/admin.css">
     <link rel="shortcut icon" href="../static/images/sch_favicon.png" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="../static/scripts/admin.js"></script>
 </head>
 <body>
-    <form method="post" action="/auth/sign_out">
-        <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
-        <input type="submit" value="Logout">
-    </form>
-    <h1>Admin</h1> 
-    <p> Welcome to the admin page</p>
-    <p> You are logged in as {{ current_user.first_name }}</p>
-    <p> Your email is {{ current_user.email }}</p>
-    <p> Your role is {{ current_user.role }}</p>
-    <p> Your id is {{ current_user.id }}</p> 
+    <div id="top_nav">
+        <li id="profile">{{ user.first_name }}
+            <ul id="profile-content">
+                <li><form method="post" action="/profile">
+                    <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+                    <input class="profile-button" type="submit" value="Profile">
+                </form></li>
+                <li><form method="post" action="/auth/sign_out">
+                    <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+                    <input class="logout-form" type="submit" value="Logout">
+                </form></li>
+            </ul>
+        </li>
+
+            <!--<form method="post" action="/profile">
+                <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+                <input class="profile-button" type="submit" value="{{ user.first_name }}">
+            </form>
+            <form method="post" action="/auth/sign_out">
+                <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+                <input class="logout-form" type="submit" value="Logout">
+            </form>-->
+    </div>
+    <div class="side_bar">
+        <div class="logo"></div>
+        <div class="menu">
+            <ul>
+                <li class="active"><a href="/">Dashboard</a></li>
+                <li class="dropdown"><a href="#">Registration</a>
+                    <i class="material-icons">&#xe313;</i>
+                    <ul class="dropdown-content"></ul>
+                </li>
+                <li><a href="#">Attendance</a></li>
+                <li><a href="#">Lessons</a></li>
+                <li><a href="#">Calender</a></li>
+                <li><a href="#">Finance</a></li>
+                <li><a href="#">Subject</a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+            </ul>
+        </div>
+    </div>
+    </div>
+    <div class="card_container">
+        <div class="card card1">
+            <h2>Students</h2>
+            <h1 class="student"></h1>
+        </div>
+        <div class="card card2">
+            <h1 class="b"></h1>
+        </div>
+        <div class="card card3">
+            <h1 class="c"></h1>
+        </div>
+        <div class="card card4">
+            <h1 class="d"></h1>
+        </div>
+    </div>
+    </div>
 </body>
 </html>
