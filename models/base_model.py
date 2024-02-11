@@ -22,7 +22,7 @@ class BaseModel:
     """The BaseModel class from which future classes will be derived"""
     if models.storage_type == "db":
         id = Column(String(60), primary_key=True)
-        created_at = Column(DateTime, default=datetime.utcnow)
+        registered_at = Column(DateTime, default=datetime.utcnow)
         updated_at = Column(DateTime, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
@@ -32,13 +32,13 @@ class BaseModel:
                 if key != "__class__":
                     setattr(self, key, value)
             if kwargs.get(
-                    "created_at",
+                    "registered_at",
                     None) and isinstance(
-                    self.created_at,
+                    self.registered_at,
                     str):
-                self.created_at = datetime.strptime(kwargs["created_at"], time)
+                self.registered_at = datetime.strptime(kwargs["registered_at"], time)
             else:
-                self.created_at = datetime.utcnow()
+                self.registered_at = datetime.utcnow()
             if kwargs.get(
                     "updated_at",
                     None) and isinstance(
@@ -51,8 +51,8 @@ class BaseModel:
                 self.id = ""
         else:
             self.id = ""
-            self.created_at = datetime.utcnow()
-            self.updated_at = self.created_at
+            self.registered_at = datetime.utcnow()
+            self.updated_at = self.registered_at
 
     def __str__(self):
         """String representation of the BaseModel class"""
@@ -68,8 +68,8 @@ class BaseModel:
     def to_dict(self):
         """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()
-        if "created_at" in new_dict:
-            new_dict["created_at"] = new_dict["created_at"].strftime(time)
+        if "registered_at" in new_dict:
+            new_dict["registered_at"] = new_dict["registered_at"].strftime(time)
         if "updated_at" in new_dict:
             new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
         new_dict["__class__"] = self.__class__.__name__

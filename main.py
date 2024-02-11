@@ -62,7 +62,7 @@ if not get_user_by_nin(teacher.nin):
 print("-- Create a new Student --")
 student = Student()
 student.nin = "5656"
-if get_user_by_nin(student.nin):
+if  get_user_by_nin(student.nin):
     student.first_name = "John"
     student.email = "airbnb2@mail.com"
     student.password = "root"

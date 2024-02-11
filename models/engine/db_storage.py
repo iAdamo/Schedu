@@ -40,26 +40,6 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
 
-class DBStorage:
-    """interaacts with the MySQL database"""
-    __engine = None
-    __session = None
-
-    def __init__(self):
-        """Instantiate a DBStorage object"""
-        MGT_MYSQL_USER = getenv('MGT_MYSQL_USER')
-        MGT_MYSQL_PWD = getenv('MGT_MYSQL_PWD')
-        MGT_MYSQL_HOST = getenv('MGT_MYSQL_HOST')
-        MGT_MYSQL_DB = getenv('MGT_MYSQL_DB')
-        MGT_ENV = getenv('MGT_ENV')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(MGT_MYSQL_USER,
-                                             MGT_MYSQL_PWD,
-                                             MGT_MYSQL_HOST,
-                                             MGT_MYSQL_DB))
-        if MGT_ENV == "test":
-            Base.metadata.drop_all(self.__engine)
-
     def all(self, cls=None):
         """query on the current database session"""
         new_dict = {}
@@ -93,10 +73,9 @@ class DBStorage:
 
     def get(self, cls, id):
         """retrieve one object"""
-        try:
-            return self.__session.query(cls).filter(cls.id == id).one()
-        except BaseException:
-            return None
+        if type(cls) == str:
+            cls = classes[cls]
+        return self.__session.query(cls).get(id)
 
     def count(self, cls=None):
         """count the number of objects in storage"""

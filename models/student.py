@@ -21,7 +21,7 @@ class Student(UserMixin, BaseModel, Base):
         grade = Column(String(128), nullable=False)
         email = Column(String(128), nullable=False, unique=True)
         guardian_id = Column(String(60), ForeignKey('guardians.id'))
-        guardian = relationship("Guardian", backref="students")
+        guardian_relation = relationship("Guardian", backref="students", foreign_keys=[guardian_id])
     else:
         id = ""
         name = ""

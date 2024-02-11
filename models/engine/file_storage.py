@@ -60,7 +60,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """delete obj from __objects if it’s inside"""
+        """delete obj from __objects if it's inside"""
         if obj is not None:
             key = obj.__class__.__name__ + '.' + obj.id
             if key in self.__objects:
@@ -68,10 +68,13 @@ class FileStorage:
 
     def get(self, cls, id):
         """retrieve one object"""
-        if cls is not None and id is not None:
-            key = cls.__name__ + '.' + id
-            if key in self.__objects:
-                return self.__objects[key]
+        if cls and id:
+            if type(cls) is str:
+                obj_id = cls + '.' + id
+            else:
+                obj_id = cls.__name__ + '.' + id
+            all_obj = self.all(cls)
+            return all_obj.get(obj_id)
         return None
 
     def count(self, cls=None):

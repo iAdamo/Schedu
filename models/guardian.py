@@ -18,11 +18,8 @@ class Guardian(UserMixin, BaseModel, Base):
         id = Column(String(60), nullable=False, primary_key=True)
         name = Column(String(128), nullable=False)
         email = Column(String(128), nullable=False, unique=True)
-        student_id = Column(
-            String(60),
-            ForeignKey('students.id'),
-            nullable=False)
-        student = relationship("Student", backref="guardian")
+        student_id = Column(String(60), ForeignKey('students.id'), nullable=False)
+        student_relation = relationship("Student", backref="guardian", foreign_keys=[student_id])
     else:
         id = ""
         name = ""
