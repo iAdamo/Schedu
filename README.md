@@ -84,4 +84,4 @@ If you're interested in contributing to the development of Schedu, we welcome yo
 ---
 
 ## **`Authors`**
-### [**Adam Sanusi Babatunde**](https://linkedin/in/adamsanusi) | [**Olaoluwa Hassan**](https://linkedin/in/hassan-olaoluwa)
+### [**Adam Sanusi Babatunde**](https://linkedin/in/adamsanusi) | [**Olaoluwa Hassan**](https://linkedin/in/hassan-olaoluwa) | [**Linda Ihuoma Nwachukwu**](https://linkedin/in/linda-nwachukwu)

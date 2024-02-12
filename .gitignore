@@ -1,0 +1,8 @@
+__pycache__
+file.json
+*.swp
+*.swo
+*.swn
+*~
+~*
+.hbnb
