@@ -5,9 +5,8 @@ import models
 from models.base_model import BaseModel, Base
 from models.student import Student
 from os import getenv
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-# Assuming UserMixin is required for authentication
 from flask_login import UserMixin
 
 
@@ -16,8 +15,13 @@ class Guardian(UserMixin, BaseModel, Base):
     if models.storage_type == "db":
         __tablename__ = 'guardians'
         id = Column(String(60), nullable=False, primary_key=True)
-        name = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        name = Column(String(60), nullable=False)
+        date_of_birth = Column(String(10), nullable=False)
+        nin = Column(Integer, nullable=False, unique=True)
+        phone_number = Column(Integer, nullable=False, unique=True)
         email = Column(String(128), nullable=False, unique=True)
+        role = Column(String(128), nullable=False)
         student_id = Column(String(60), ForeignKey('students.id'), nullable=False)
         student_relation = relationship("Student", backref="guardian", foreign_keys=[student_id])
     else:
@@ -33,7 +37,3 @@ class Guardian(UserMixin, BaseModel, Base):
         from models import storage
         count = len(storage.all("Guardian"))
         self.id = f"schedu-guardian-{first_name[:3]}-{count:04}".lower()
-
-    def is_active(self):
-        """ Return True if the user account is active, and False otherwise """
-        return True

@@ -33,8 +33,3 @@ class Teacher(UserMixin, BaseModel, Base):
         from models import storage
         count = len(storage.all("Teacher"))
         self.id = f"schedu-teacher-{first_name[:3]}-{count:04}".lower()
-
-    def is_active(self):
-        """Return True if the user account is active, and False otherwise
-        """
-        return True

@@ -37,7 +37,3 @@ class Admin(UserMixin, BaseModel, Base):
         count = len(storage.all("Admin"))
         self.id = f"schedu-admin-{first_name[:3]}-{str(count).zfill(4)}".lower(
         )
-
-    def is_active(self):
-        """ Return True if the user account is active, and False otherwise """
-        return True

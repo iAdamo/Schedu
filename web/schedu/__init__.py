@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
+from flask import flash, redirect
+from functools import wraps
 from flask import Flask
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_wtf.csrf import CSRFProtect
 import os
 
@@ -15,9 +17,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = '/auth/sign_in'
 
-from functools import wraps
-from flask import flash, redirect, url_for
-from flask_login import current_user
 
 def admin_required(func):
     """ Decorator to check if user is an admin
@@ -29,7 +28,5 @@ def admin_required(func):
             return redirect("/")
         return func(*args, **kwargs)
     return decorated_function
-
-
 
 from web.schedu import routes

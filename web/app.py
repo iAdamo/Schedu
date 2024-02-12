@@ -27,13 +27,14 @@ def handle_csrf_error(e):
         return redirect('/auth/sign_in')
     else:
         abort(400)
-
         
-@app.teardown_appcontext
-def teardown(exception):
-    """A method to remove the current SQLAlchemy Session
-    """
-    storage.close()
+@app.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    if request.path in ('/auth/sign_in', '/auth/sign_out', '/'):
+        flash('Your session has expired', 'error')
+        return redirect('/auth/sign_in')
+    else:
+        abort(400)
 
 
 if __name__ == '__main__':
