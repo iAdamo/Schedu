@@ -1,22 +1,47 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, IntegerField, StringField, PasswordField, SubmitField, SelectField, DateField
-from wtforms.validators import DataRequired, Email, EqualTo
-
+from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
+from models import storage
 
 class StudentRegForm(FlaskForm):
     """Form to handle student registration
     """
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField("Last Name", validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email', [Length(min=6, max=35), Email()])
     nin = IntegerField('NIN', validators=[DataRequired()])
     phone_number = IntegerField('Phone Number', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField(
         'Confirm Password', validators=[
             DataRequired(), EqualTo('password')])
-    date_of_birth = DateField('Date of Birth', format='%Y-%m-%d')
+    date_of_birth = DateField('Date of Birth', format='%d-%m-%Y')
     submit = SubmitField('Register')
+    
+
+    def validate_email(self, email):
+        """Check if email already exists
+        """
+        student = storage.get("Student", None)
+        for stud in student:
+            if stud.email == email.data:
+                raise ValidationError('Email already exists')
+            
+    def validate_nin(self, nin):
+        """Check if NIN already exists
+        """
+        student = storage.get("Student", None)
+        for stud in student:
+            if stud.nin == nin.data:
+                raise ValidationError('NIN already exists')
+            
+    def validate_phone_number(self, phone_number):
+        """Check if phone number already exists
+        """
+        student = storage.get("Student", None)
+        for stud in student:
+            if stud.phone_number == phone_number.data:
+                raise ValidationError('Phone number already exists')
 
 
 class TeacherRegForm(FlaskForm):
@@ -24,7 +49,7 @@ class TeacherRegForm(FlaskForm):
     """
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField("Last Name", validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email', [Length(min=6, max=35), Email()])
     nin = IntegerField('NIN', validators=[DataRequired()])
     date_of_birth = DateField('Date of Birth', format='%Y-%m-%d')
     phone_number = IntegerField('Phone Number', validators=[DataRequired()])
@@ -41,7 +66,7 @@ class GuardianRegForm(FlaskForm):
     """
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField("Last Name", validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email', [Length(min=6, max=35), Email()])
     nin = IntegerField('NIN', validators=[DataRequired()])
     phone_number = IntegerField('Phone Number', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])

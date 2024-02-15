@@ -59,39 +59,84 @@ $(document).ready(function () {
   );
 
   // function to add dropdown functionality to REGISTRATION
-  $(document).ready(function () {
-    var $dropdown = $('.dropdown');
-    var $dropdownContent = $('.dropdown-content');
+  var $dropdown = $('.dropdown');
+  var $dropdownContent = $('.dropdown-content');
 
-    $dropdown.on('click', function (e) {
-        e.stopPropagation();
+  $dropdown.on('click', function (e) {
+      e.stopPropagation();
 
-        if ($dropdown.hasClass('open')) {
-            closeDropdown();
-        } else {
-            openDropdown();
-        }
-    });
+      if ($dropdown.hasClass('open')) {
+          closeDropdown();
+      } else {
+          openDropdown();
+      }
+  });
 
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('.dropdown').length) {
-            closeDropdown();
-        }
-    });
+  $(document).on('click', function (e) {
+      if (!$(e.target).closest('.dropdown').length) {
+          closeDropdown();
+      }
+  });
 
-    function openDropdown() {
-        const dropdownHTML = `
-            <li><a href="#">Student</a></li>
-            <li><a href="#">Teacher</a></li>
-            <li><a href="#">Guardian</a></li>`;
+  function openDropdown() {
+      const dropdownHTML = `
+          <li><a href="/register/student">Student</a></li>
+          <li><a href="#">Teacher</a></li>
+          <li><a href="/register/guardian">Guardian</a></li>`;
 
-        $dropdownContent.html(dropdownHTML);
-        $dropdown.addClass('open');
-    }
+      $dropdownContent.html(dropdownHTML);
+      $dropdown.addClass('open');
+  }
 
-    function closeDropdown() {
-        $dropdownContent.empty();
-        $dropdown.removeClass('open');
-    }
+  function closeDropdown() {
+      $dropdownContent.empty();
+      $dropdown.removeClass('open');
+  }
+
+// Function to show guardian section and hide student section
+$('#guardianBtn').on('click', function () {
+  $('#studentForm').hide();
+  $('#guardianForm').show();
 });
+
+});
+$('#studentForm').submit(function (e) {
+  e.preventDefault(); // Prevent default form submission
+  var formData = $(this).serialize(); // Serialize form data
+  $.ajax({
+    url: '/register/student', // Backend route for student registration
+    type: 'POST',
+    data: formData,
+    success: function (response) {
+      // Handle success response
+      console.log('Student registration successful');
+      // Optionally, redirect the user or show a success message
+    },
+    error: function (xhr, status, error) {
+      // Handle error
+      console.error('Error during student registration:', error);
+      // Optionally, display an error message to the user
+    }
+  });
+});
+
+// Form submission handling for guardian registration
+$('#guardianForm').submit(function (e) {
+  e.preventDefault(); // Prevent default form submission
+  var formData = $(this).serialize(); // Serialize form data
+  $.ajax({
+    url: '/register/guardian', // Backend route for guardian registration
+    type: 'POST',
+    data: formData,
+    success: function (response) {
+      // Handle success response
+      console.log('Guardian registration successful');
+      // Optionally, redirect the user or show a success message
+    },
+    error: function (xhr, status, error) {
+      // Handle error
+      console.error('Error during guardian registration:', error);
+      // Optionally, display an error message to the user
+    }
+  });
 });

@@ -12,6 +12,8 @@ from models.teacher import Teacher
 from web.schedu.forms import GuardianRegForm, LoginForm, StudentRegForm, TeacherRegForm
 from sqlalchemy.exc import IntegrityError
 from web.schedu import *
+import json
+from datetime import datetime
 
 
 # ------------------------------- Login Manager ------------------------------
@@ -19,23 +21,7 @@ from web.schedu import *
 def load_user(user_id):
     """Load user from the database
     """
-    try:
-        users = {
-            'admin': "Admin",
-            'teacher': "Teacher",
-            'student': "Student",
-            'guardian': "Guardian"
-        }
-        parts = user_id.split('-')
-        role = parts[1]
-        user = users.get(role, None)
-        if user is None:
-            return None
-
-        return storage.get(user, user_id)
-    except Exception as e:
-        print(f"Error during user retrieval: {e}")
-        return None
+    return storage.get(None, user_id)
 
 
 @login_manager.unauthorized_handler
@@ -131,17 +117,24 @@ def sign_in():
 def register_student():
     """Handle the student registration route"""
     form = StudentRegForm()
+    print("first")
     if form.validate_on_submit():
+        print("second")
         data = form.data
         data['password'] = bcrypt.generate_password_hash(
             data['password']).decode('utf-8')
         data.pop('confirm_password')
+        data.pop('csrf_token')
         data.pop('submit')
         data['name'] = f"{data['first_name']} {data['last_name']}"
         data.pop('first_name')
         data.pop('last_name')
         student_count = storage.count("Student") + 1
         data['id'] = f"schedu-student-{data['name'][:3]}-{student_count}".lower()
+        data['role'] = "student"
+        print(data['date_of_birth'])
+
+        data['date_of_birth'] = data['date_of_birth'].strftime('%d-%m-%Y')
         student = Student(**data)
         try:
             storage.new(student)
@@ -150,10 +143,10 @@ def register_student():
             flash(
                 'A user with this NIN, email, or phone number already exists',
                 'error')
-            return render_template('register_student.html', form=form)
+            return render_template('register/student.html', user=current_user, form=form)
         flash('You have been registered', 'success')
         return redirect("/")
-    return render_template('register_student.html', form=form)
+    return render_template('register/student.html', user=current_user, form=form)
 
 
 @app.route('/register/teacher', methods=['GET', 'POST'], strict_slashes=False)
@@ -210,9 +203,10 @@ def register_guardian():
             flash(
                 'A user with this NIN, email, or phone number already exists',
                 'error')
-            return render_template('register_guardian.html', form=form)
+            return render_template('register/guardian.html', form=form, user=current_user)
         flash('You have been registered', 'success')
         return redirect("/")
-    return render_template('register_guardian.html', form=form)
+    return render_template('register/guardian.html', form=form, user=current_user)
+
 
 # ----------------------------------------------------------------------------

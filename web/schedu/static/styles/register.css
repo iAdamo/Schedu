@@ -1,0 +1,110 @@
+#top_nav {
+    padding: 0px;
+    height: 50px;
+    width: 100%;
+    background-color: #ffff;
+    box-shadow: 0px 5px 5px 5px #eee;
+}
+#profile{
+  list-style: none;
+  color: #838383;
+  float: right;
+  padding: 10px;
+  cursor: pointer;
+  margin: 5px 50px 0px 0px;
+  font-weight: bold;
+  }
+
+#profile-content {
+  display: none;
+  list-style-type: none;
+  padding: 0px;
+  margin: 0;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+#profile:hover #profile-content {
+  display: block;
+}
+
+.profile-button, .logout-form {
+    background-color: transparent;
+    color: #4b4a4a;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+.student-registration-form {
+    background-color: #f8f9fa;
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px #eee;
+    margin: 50px auto;
+    max-width: 400px;
+    padding: 50px;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+}
+
+.student-registration-form h2 {
+    margin-bottom: 20px;
+}
+
+.student-registration-form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.student-registration-form input[type="password"],
+.student-registration-form input[type="email"],
+.student-registration-form input[type="text"],
+.student-registration-form input[type="date"],
+.student-registration-form select {
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    margin-bottom: 10px;
+}
+
+.student-registration-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23555555" width="18px" height="18px"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    padding-right: 30px;
+}
+
+.student-registration-form input[type="submit"] {
+    background-color: #823edb;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.student-registration-form input[type="submit"]:hover {
+    background-color: #7a29d7;
+}
+
