@@ -18,6 +18,7 @@ class Student(UserMixin, BaseModel, Base):
         id = Column(String(60), nullable=False, primary_key=True)
         password = Column(String(128), nullable=False)
         name = Column(String(60), nullable=False)
+        address = Column(String(128), nullable=False)
         date_of_birth = Column(String(10), nullable=False)
         nin = Column(Integer, nullable=False, unique=True)
         phone_number = Column(Integer, nullable=False, unique=True)

@@ -25,6 +25,7 @@ CREATE TABLE admins (
     PRIMARY KEY (id)
 );
 
+
 INSERT INTO admins VALUES
 ('schedu-admin-ali-0000', '$2b$12$ggLlP8CFrScNpGcEV8D0YOMrHx3Nb.USpm3MUSuEFV7pk1vFcw1ma', 'John', 'Doe', '1990-01-01', 123456089, 967654321, 'john.doe@eample.com', 'admin'),
 ('student2', 'hashed_password_2', 'Jane', 'Smith', '1995-05-15', 987684321, 123406789, 'jane.sith@example.com', 'student');
