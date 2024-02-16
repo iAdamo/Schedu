@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.__class__.__name__ }} dashboard | Management</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <link rel="stylesheet" href="../static/styles/admin.css">
+    <link rel="stylesheet" href="../static/styles/register.css">
+    <link rel="shortcut icon" href="../static/images/sch_favicon.png" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="../static/scripts/admin.js"></script>
+</head>
+<body>
+    <div id="top_nav">
+        <li id="profile">{{ user.first_name }}
+            <ul id="profile-content">
+                <li><form method="post" action="/profile">
+                    <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+                    <input class="profile-button" type="submit" value="Profile">
+                </form></li>
+                <li><form method="post" action="/auth/sign_out">
+                    <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+                    <input class="logout-form" type="submit" value="Logout">
+                </form></li>
+            </ul>
+        </li>
+    </div>
+    <div class="side_bar">
+        <div class="logo"></div>
+        {% if user.__class__.__name__ == 'Admin' %}
+        <div class="menu">
+            <ul>
+                <li class="active"><a href="/">Dashboard</a></li>
+                <li class="dropdown"><a href="#">Registration</a>
+                    <i class="material-icons">&#xe313;</i>
+                    <ul class="dropdown-content"></ul>
+                </li>
+                <li><a href="#">Attendance</a></li>
+                <li><a href="#">Lessons</a></li>
+                <li><a href="#">Calender</a></li>
+                <li><a href="#">Finance</a></li>
+                <li><a href="#">Subject</a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    {% block content %}{% endblock %}
+</body>
+</html>

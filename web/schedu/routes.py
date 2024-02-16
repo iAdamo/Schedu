@@ -32,27 +32,6 @@ def unauthorized_callback():
 
 # ---------------------------Login Route -------------------------------------
 
-
-def authenticate_user(id, password):
-    """Authenticate user based on user type, ID, and password
-    """
-    parts = id.split('-')
-
-    try:
-        if len(parts) != 4 or parts[0] != 'schedu':
-            return None
-        user_type = parts[1]
-        user = storage.get(user_type.capitalize(), id)
-
-        # Check if user exists and verify password
-        if user and bcrypt.check_password_hash(user.password, password):
-            return user
-    except Exception as e:
-        print(f"Error during user retrieval: {e}")
-
-    return None
-
-
 @app.route('/', strict_slashes=False)
 @login_required
 def index():
@@ -60,7 +39,7 @@ def index():
     """
     form = LoginForm()
     return render_template(
-        f"/{current_user.role}.html",
+        f"/dashboard_{current_user.role}.html",
         user=current_user,
         form=form)
 
@@ -88,13 +67,9 @@ def sign_in():
     form = LoginForm()
 
     if form.validate_on_submit():
-        id = form.id.data
-        password = form.password.data
-
-        user = authenticate_user(id, password)
-
-        if user:
-            login_user(user)
+        user = storage.get(None, form.id.data)
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
             flash('You have been logged in', 'success')
             response = make_response(redirect("/"))
             response.headers['Cache-Control'] = (
@@ -146,7 +121,7 @@ def register_student():
             return render_template('register/student.html', user=current_user, form=form)
         flash('You have been registered', 'success')
         return redirect("/")
-    return render_template('register/student.html', user=current_user, form=form)
+    return render_template('reg_student.html', user=current_user, form=form)
 
 
 @app.route('/register/teacher', methods=['GET', 'POST'], strict_slashes=False)
@@ -176,7 +151,7 @@ def register_teacher():
             return render_template('register_teacher.html', form=form)
         flash('You have been registered', 'success')
         return redirect("/")
-    return render_template('register_teacher.html', form=form)
+    return render_template('reg_teacher.html', form=form, user=current_user)
 
 
 @app.route('/register/guardian', methods=['GET', 'POST'], strict_slashes=False)
@@ -206,7 +181,7 @@ def register_guardian():
             return render_template('register/guardian.html', form=form, user=current_user)
         flash('You have been registered', 'success')
         return redirect("/")
-    return render_template('register/guardian.html', form=form, user=current_user)
+    return render_template('reg_guardian.html', form=form, user=current_user)
 
 
 # ----------------------------------------------------------------------------

@@ -81,7 +81,7 @@ $(document).ready(function () {
   function openDropdown() {
       const dropdownHTML = `
           <li><a href="/register/student">Student</a></li>
-          <li><a href="#">Teacher</a></li>
+          <li><a href="/register/teacher">Teacher</a></li>
           <li><a href="/register/guardian">Guardian</a></li>`;
 
       $dropdownContent.html(dropdownHTML);

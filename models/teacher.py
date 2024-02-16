@@ -29,7 +29,3 @@ class Teacher(UserMixin, BaseModel, Base):
         """Initializes teacher
         """
         super().__init__(*args, **kwargs)
-        first_name = kwargs.get("first_name", "")
-        from models import storage
-        count = len(storage.all("Teacher"))
-        self.id = f"schedu-teacher-{first_name[:3]}-{count:04}".lower()

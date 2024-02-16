@@ -32,8 +32,3 @@ class Admin(UserMixin, BaseModel, Base):
         """ Initializes admin
         """
         super().__init__(*args, **kwargs)
-        first_name = kwargs.get("first_name", "")
-        from models import storage
-        count = len(storage.all("Admin"))
-        self.id = f"schedu-admin-{first_name[:3]}-{str(count).zfill(4)}".lower(
-        )
