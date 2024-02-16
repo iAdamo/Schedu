@@ -165,6 +165,8 @@ def register_teacher():
         data.pop('last_name')
         teacher_count = storage.count("Teacher") + 1
         data['id'] = f"schedu-teacher-{data['name'][:3]}-{teacher_count}".lower()
+
+        data['date_of_birth'] = data['date_of_birth'].strftime('%d-%m-%Y')
         teacher = Teacher(**data)
         try:
             storage.new(teacher)
@@ -176,7 +178,7 @@ def register_teacher():
             return render_template('register_teacher.html', form=form)
         flash('You have been registered', 'success')
         return redirect("/")
-    return render_template('register_teacher.html', form=form)
+    return render_template('register/teacher.html', user=current_user, form=form)
 
 
 @app.route('/register/guardian', methods=['GET', 'POST'], strict_slashes=False)
@@ -195,6 +197,8 @@ def register_guardian():
         data.pop('last_name')
         guardian_count = storage.count("Guardian") + 1
         data['id'] = f"schedu-guardian-{data['name'][:3]}-{guardian_count}".lower()
+
+        data['date_of_birth'] = data['date_of_birth'].strftime('%d-%m-%Y')
         guardian = Guardian(**data)
         try:
             storage.new(guardian)
