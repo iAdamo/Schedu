@@ -28,6 +28,15 @@
             </ul>
         </li>
     </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     <div class="side_bar">
         <div class="logo"></div>
         {% if user.__class__.__name__ == 'Admin' %}

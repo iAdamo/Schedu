@@ -19,13 +19,9 @@ class Teacher(UserMixin, BaseModel, Base):
         name = Column(String(128), nullable=False)
         email = Column(String(128), nullable=False, unique=True)
         subject = Column(String(128), nullable=False)
+        role = Column(String(128), nullable=False)
     else:
-        id = ""
-        name = ""
-        email = ""
-        subject = ""
-
-    def __init__(self, *args, **kwargs):
-        """Initializes teacher
-        """
-        super().__init__(*args, **kwargs)
+        def __init__(self, *args, **kwargs):
+            """Initializes teacher
+            """
+            super().__init__(*args, **kwargs)

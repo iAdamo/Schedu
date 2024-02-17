@@ -15,23 +15,27 @@
         <input type="text" id="studentAddress" name="address" required><br>
 
         <label for="studentPhoneNumber">Phone Number:</label>
-        <input type="text" id="studentPhoneNumber" name="phone_number" required><br>
+        <input type="text" id="studentPhoneNumber" name="phone_number" required>
+        <br>
+        {% for error in form.phone_number.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
 
         <label for="studentEmail">Email</label>
         <input type="email" id="studentEmail" name="email" placeholder="Enter your email"
         pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$" required><br>
-
-        <label for="studentSubject">Subject:</label>
-        <input type="text" id="studentSubject" name="subject" required><br>
+        {% for error in form.email.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
         
         <label for="studentDOB">Date of Birth:</label>
-        <input type="text" id="studentDOB" name="date_of_birth" placeholder="DD-MM-YYYY" required><br>
-        
-        <label for="studentGenotype">Genotype:</label>
-        <input type="text" id="studentGenotype" name="genotype" required><br>
+        <input type="date" id="studentDOB" name="date_of_birth" placeholder="DD-MM-YYYY" required><br>
     
         <label for="studentNIN">NIN:</label>
         <input type="text" id="studentNIN" name="nin" required><br>
+        {% for error in form.nin.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
     
         <label for="studentSex">Sex:</label>
         <select id="studentSex" name="sex" required>
@@ -52,7 +56,7 @@
           maxlength="100" minlength="8" required>
 
         <!-- Submit Button -->
-        <input type="submit" value="Register">
+        <input type="submit" name="submit" value="Register">
     </form>
 </div>
 {% endblock %}

@@ -7,8 +7,8 @@ body {
 
 .flashes {
     list-style-type: none;
-    padding: 0;
-    margin-bottom: 20px;
+    height: 20px;
+    margin: 10px 10px 0px 150px;
   }
   
 .flashes li {
@@ -18,7 +18,7 @@ body {
     padding: 8px;
     border-radius: 4px;
     margin-bottom: 10px;
-    font-size: 12px;
+    font-size: 14px;
   }
 
 #top_nav {

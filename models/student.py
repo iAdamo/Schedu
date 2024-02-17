@@ -27,13 +27,6 @@ class Student(UserMixin, BaseModel, Base):
         guardian_id = Column(String(60), ForeignKey('guardians.id'))
         guardian_relation = relationship("Guardian", backref="students", foreign_keys=[guardian_id])
     else:
-        id = ""
-        name = ""
-        grade = ""
-        email = ""
-        nin = ""
-        phone_number = ""
-
-    def __init__(self, *args, **kwargs):
-        """ Initializes student """
-        super().__init__(*args, **kwargs)
+        def __init__(self, *args, **kwargs):
+            """ Initializes student """
+            super().__init__(*args, **kwargs)

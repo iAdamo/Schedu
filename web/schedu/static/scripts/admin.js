@@ -82,7 +82,7 @@ $(document).ready(function () {
       const dropdownHTML = `
           <li><a href="/register/student">Student</a></li>
           <li><a href="/register/teacher">Teacher</a></li>
-          <li><a href="/register/guardian">Guardian</a></li>`;
+          <li><a href="/register/student">Guardian</a></li>`;
 
       $dropdownContent.html(dropdownHTML);
       $dropdown.addClass('open');
@@ -94,49 +94,8 @@ $(document).ready(function () {
   }
 
 // Function to show guardian section and hide student section
-$('#guardianBtn').on('click', function () {
+$('#nextbutton').on('click', function () {
   $('#studentForm').hide();
   $('#guardianForm').show();
 });
-
-});
-$('#studentForm').submit(function (e) {
-  e.preventDefault(); // Prevent default form submission
-  var formData = $(this).serialize(); // Serialize form data
-  $.ajax({
-    url: '/register/student', // Backend route for student registration
-    type: 'POST',
-    data: formData,
-    success: function (response) {
-      // Handle success response
-      console.log('Student registration successful');
-      // Optionally, redirect the user or show a success message
-    },
-    error: function (xhr, status, error) {
-      // Handle error
-      console.error('Error during student registration:', error);
-      // Optionally, display an error message to the user
-    }
-  });
-});
-
-// Form submission handling for guardian registration
-$('#guardianForm').submit(function (e) {
-  e.preventDefault(); // Prevent default form submission
-  var formData = $(this).serialize(); // Serialize form data
-  $.ajax({
-    url: '/register/guardian', // Backend route for guardian registration
-    type: 'POST',
-    data: formData,
-    success: function (response) {
-      // Handle success response
-      console.log('Guardian registration successful');
-      // Optionally, redirect the user or show a success message
-    },
-    error: function (xhr, status, error) {
-      // Handle error
-      console.error('Error during guardian registration:', error);
-      // Optionally, display an error message to the user
-    }
-  });
 });

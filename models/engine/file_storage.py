@@ -81,6 +81,8 @@ class FileStorage:
                 if obj.id == id:
                     return obj
         elif cls and id is None:
+            if isinstance(cls, str):
+                cls = classes[cls]
             return [obj for obj in self.__objects.values() if obj.__class__ == cls]
         else:
             return None
