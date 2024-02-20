@@ -6,9 +6,11 @@ from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
 from models.teacher import Teacher
+from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/teachers', strict_slashes=False)
+@jwt_required()
 def teachers():
     """returns a list of all teachers
     """
@@ -17,6 +19,7 @@ def teachers():
 
 
 @app_views.route('/teachers/<teacher_id>', strict_slashes=False)
+@jwt_required()
 def teacher(teacher_id):
     """returns a teacher object by id
     """
@@ -29,6 +32,7 @@ def teacher(teacher_id):
 @app_views.route('/teachers/<teacher_id>',
                  methods=['DELETE'],
                  strict_slashes=False)
+@jwt_required()
 def delete_teacher(teacher_id):
     """deletes a teacher object by id
     """
@@ -41,6 +45,7 @@ def delete_teacher(teacher_id):
 
 
 @app_views.route('/teachers', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def create_teacher():
     """creates a teacher object
     """
@@ -56,6 +61,7 @@ def create_teacher():
 
 @app_views.route('/teachers/<teacher_id>',
                  methods=['PUT'], strict_slashes=False)
+@jwt_required()
 def update_teacher(teacher_id):
     """updates a teacher object
     """

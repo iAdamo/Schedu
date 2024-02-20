@@ -25,15 +25,6 @@ class Guardian(UserMixin, BaseModel, Base):
         student_id = Column(String(60), ForeignKey('students.id'), nullable=False)
         student_relation = relationship("Student", backref="guardian", foreign_keys=[student_id])
     else:
-        id = ""
-        name = ""
-        email = ""
-        student_id = ""
-
-    def __init__(self, *args, **kwargs):
-        """ Initializes guardian """
-        super().__init__(*args, **kwargs)
-        first_name = kwargs.get("first_name", "")
-        from models import storage
-        count = len(storage.all("Guardian"))
-        self.id = f"schedu-guardian-{first_name[:3]}-{count:04}".lower()
+        def __init__(self, *args, **kwargs):
+            """ Initializes guardian """
+            super().__init__(*args, **kwargs)

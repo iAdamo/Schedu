@@ -2,18 +2,20 @@
 """routes for the web application
 """
 
+import uuid
 from models import storage
 from flask_login import login_user, current_user, logout_user
-from flask import abort, make_response, render_template, redirect, request, flash
+from flask import make_response, render_template, redirect, flash
 from flask_login import login_required
 from models.guardian import Guardian
 from models.student import Student
 from models.teacher import Teacher
-from web.schedu.forms import GuardianRegForm, LoginForm, StudentRegForm, TeacherRegForm
-from sqlalchemy.exc import IntegrityError
+from web.schedu.forms import (
+    GuardianRegForm,
+    LoginForm,
+    StudentRegForm,
+    TeacherRegForm)
 from web.schedu import *
-import json
-from datetime import datetime
 
 
 # ------------------------------- Login Manager ------------------------------
@@ -33,36 +35,23 @@ def unauthorized_callback():
 # ---------------------------Login Route -------------------------------------
 
 
-def authenticate_user(id, password):
-    """Authenticate user based on user type, ID, and password
-    """
-    parts = id.split('-')
-
-    try:
-        if len(parts) != 4 or parts[0] != 'schedu':
-            return None
-        user_type = parts[1]
-        user = storage.get(user_type.capitalize(), id)
-
-        # Check if user exists and verify password
-        if user and bcrypt.check_password_hash(user.password, password):
-            return user
-    except Exception as e:
-        print(f"Error during user retrieval: {e}")
-
-    return None
-
-
 @app.route('/', strict_slashes=False)
-@login_required
 def index():
     """Handle the index route
     """
+    return render_template('welcome.html')
+
+
+@app.route('/dashboard', strict_slashes=False)
+@login_required
+def dashboard():
+    """Handle the dashboard route
+    """
     form = LoginForm()
     return render_template(
-        f"/{current_user.role}.html",
+        f"/dashboard_{current_user.role}.html",
         user=current_user,
-        form=form)
+        form=form, cache_id=str(uuid.uuid4()))
 
 
 @app.route('/auth/sign_out', methods=['POST'], strict_slashes=False)
@@ -71,10 +60,10 @@ def sign_out():
     """Handle the sign_out route
     """
     if not current_user.is_authenticated:
-        return redirect(f"/auth/sign_in")
-    logout_user()
+        return redirect("/")
     flash('You have been logged out', 'success')
-    return redirect("/auth/sign_in")
+    logout_user()
+    return redirect("/")
 
 
 @app.route('/auth/sign_in', methods=['GET', 'POST'], strict_slashes=False)
@@ -83,20 +72,22 @@ def sign_in():
     if current_user.is_authenticated:
         # Redirect user to their dashboard or another page
         flash('You are already signed in')
-        return redirect("/")
+        response = make_response(redirect("/dashboard"))
+        response.headers['Cache-Control'] = (
+            'no-cache, no-store, must-revalidate')
+        return response
 
     form = LoginForm()
 
     if form.validate_on_submit():
-        id = form.id.data
-        password = form.password.data
-
-        user = authenticate_user(id, password)
-
-        if user:
-            login_user(user)
-            flash('You have been logged in', 'success')
-            response = make_response(redirect("/"))
+        user = storage.get(None, form.id.data)
+        if user and bcrypt.check_password_hash(
+                user.password, form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            flash(
+                f'Welcome {user.first_name}, You have been logged in',
+                'success')
+            response = make_response(redirect("/dashboard"))
             response.headers['Cache-Control'] = (
                 'no-cache, no-store, must-revalidate')
             return response
@@ -107,78 +98,60 @@ def sign_in():
                 'no-cache, no-store, must-revalidate')
             return response
 
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, cache_id=str(uuid.uuid4()))
 
 
 # ------------------------------- Register Route ----------------------------
+
+def register_user(form, cls, role):
+    if form.validate_on_submit():
+        data = form.data
+        pd = data['password']
+        data['password'] = bcrypt.generate_password_hash(
+            data['password']).decode('utf-8')
+        data.pop('confirm_password')
+        data.pop('csrf_token')
+        data.pop('submit')
+        data['name'] = (
+            f"{data['first_name']} {data['middle_name']} {data['last_name']}")
+        count = storage.count(role) + 1
+        data['id'] = f"schedu-{role}-{data['name'][:3]}-{count}".lower()
+        data['date_of_birth'] = data['date_of_birth'].strftime('%d-%m-%Y')
+        data['role'] = role
+        user = cls(**data)
+        user.save()
+        flash(
+            f'{data["name"]} has been registered. id: {data["id"]}, password: {pd}',
+            'success')
+
+        response = make_response(redirect("/dashboard"))
+        response.headers['Cache-Control'] = (
+            'no-cache, no-store, must-revalidate')
+        return response
+    else:
+        print(form.errors)
+    return render_template(
+        f'reg_{role}.html',
+        user=current_user,
+        form=form,
+        cache_id=str(
+            uuid.uuid4()))
+
 
 @app.route('/register/student', methods=['GET', 'POST'], strict_slashes=False)
 @admin_required
 def register_student():
     """Handle the student registration route"""
     form = StudentRegForm()
-    print("first")
-    if form.validate_on_submit():
-        print("second")
-        data = form.data
-        data['password'] = bcrypt.generate_password_hash(
-            data['password']).decode('utf-8')
-        data.pop('confirm_password')
-        data.pop('csrf_token')
-        data.pop('submit')
-        data['name'] = f"{data['first_name']} {data['last_name']}"
-        data.pop('first_name')
-        data.pop('last_name')
-        student_count = storage.count("Student") + 1
-        data['id'] = f"schedu-student-{data['name'][:3]}-{student_count}".lower()
-        data['role'] = "student"
-        print(data['date_of_birth'])
-
-        data['date_of_birth'] = data['date_of_birth'].strftime('%d-%m-%Y')
-        student = Student(**data)
-        try:
-            storage.new(student)
-            storage.save()
-        except IntegrityError:
-            flash(
-                'A user with this NIN, email, or phone number already exists',
-                'error')
-            return render_template('register/student.html', user=current_user, form=form)
-        flash('You have been registered', 'success')
-        return redirect("/")
-    return render_template('register/student.html', user=current_user, form=form)
+    return register_user(form, Student, "student")
 
 
 @app.route('/register/teacher', methods=['GET', 'POST'], strict_slashes=False)
 @admin_required
 def register_teacher():
     """Handle the teacher registration route"""
-    form = TeacherRegForm()
-    if form.validate_on_submit():
-        data = form.data
-        data['password'] = bcrypt.generate_password_hash(
-            data['password']).decode('utf-8')
-        data.pop('confirm_password')
-        data.pop('submit')
-        data['name'] = f"{data['first_name']} {data['last_name']}"
-        data.pop('first_name')
-        data.pop('last_name')
-        teacher_count = storage.count("Teacher") + 1
-        data['id'] = f"schedu-teacher-{data['name'][:3]}-{teacher_count}".lower()
-
-        data['date_of_birth'] = data['date_of_birth'].strftime('%d-%m-%Y')
-        teacher = Teacher(**data)
-        try:
-            storage.new(teacher)
-            storage.save()
-        except IntegrityError:
-            flash(
-                'A user with this NIN, email, or phone number already exists',
-                'error')
-            return render_template('register_teacher.html', form=form)
-        flash('You have been registered', 'success')
-        return redirect("/")
-    return render_template('register/teacher.html', user=current_user, form=form)
+    form = TeacherRegForm()  
+    return register_user(form, Teacher, "teacher")
 
 
 @app.route('/register/guardian', methods=['GET', 'POST'], strict_slashes=False)
@@ -186,31 +159,8 @@ def register_teacher():
 def register_guardian():
     """Handle the guardian registration route"""
     form = GuardianRegForm()
-    if form.validate_on_submit():
-        data = form.data
-        data['password'] = bcrypt.generate_password_hash(
-            data['password']).decode('utf-8')
-        data.pop('confirm_password')
-        data.pop('submit')
-        data['name'] = f"{data['first_name']} {data['last_name']}"
-        data.pop('first_name')
-        data.pop('last_name')
-        guardian_count = storage.count("Guardian") + 1
-        data['id'] = f"schedu-guardian-{data['name'][:3]}-{guardian_count}".lower()
-
-        data['date_of_birth'] = data['date_of_birth'].strftime('%d-%m-%Y')
-        guardian = Guardian(**data)
-        try:
-            storage.new(guardian)
-            storage.save()
-        except IntegrityError:
-            flash(
-                'A user with this NIN, email, or phone number already exists',
-                'error')
-            return render_template('register/guardian.html', form=form, user=current_user)
-        flash('You have been registered', 'success')
-        return redirect("/")
-    return render_template('register/guardian.html', form=form, user=current_user)
-
+    return register_user(form, Guardian, "guardian")
 
 # ----------------------------------------------------------------------------
+
+# --------------------------------Search-----------------------------------------

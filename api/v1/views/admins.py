@@ -6,9 +6,11 @@ from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
 from models.admin import Admin
+from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/admins', strict_slashes=False)
+@jwt_required()
 def admins():
     """returns a list of all admins
     """
@@ -16,6 +18,7 @@ def admins():
 
 
 @app_views.route('/admins/<admin_id>', strict_slashes=False)
+@jwt_required()
 def admin(admin_id):
     """returns a admin object by id
     """
@@ -28,6 +31,7 @@ def admin(admin_id):
 @app_views.route('/admins/<admin_id>',
                  methods=['DELETE'],
                  strict_slashes=False)
+@jwt_required()
 def delete_admin(admin_id):
     """deletes a admin object by id
     """
@@ -40,6 +44,7 @@ def delete_admin(admin_id):
 
 
 @app_views.route('/admins', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def create_admin():
     """creates a admin object
     """
@@ -54,6 +59,7 @@ def create_admin():
 
 
 @app_views.route('/admins/<admin_id>', methods=['PUT'], strict_slashes=False)
+@jwt_required()
 def update_admin(admin_id):
     """updates a admin object
     """

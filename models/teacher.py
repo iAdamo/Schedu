@@ -19,17 +19,9 @@ class Teacher(UserMixin, BaseModel, Base):
         name = Column(String(128), nullable=False)
         email = Column(String(128), nullable=False, unique=True)
         subject = Column(String(128), nullable=False)
+        role = Column(String(128), nullable=False)
     else:
-        id = ""
-        name = ""
-        email = ""
-        subject = ""
-
-    def __init__(self, *args, **kwargs):
-        """Initializes teacher
-        """
-        super().__init__(*args, **kwargs)
-        first_name = kwargs.get("first_name", "")
-        from models import storage
-        count = len(storage.all("Teacher"))
-        self.id = f"schedu-teacher-{first_name[:3]}-{count:04}".lower()
+        def __init__(self, *args, **kwargs):
+            """Initializes teacher
+            """
+            super().__init__(*args, **kwargs)

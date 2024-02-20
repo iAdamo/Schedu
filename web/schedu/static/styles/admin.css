@@ -7,8 +7,8 @@ body {
 
 .flashes {
     list-style-type: none;
-    padding: 0;
-    margin-bottom: 20px;
+    height: 20px;
+    margin: 10px 10px 0px 150px;
   }
   
 .flashes li {
@@ -18,7 +18,7 @@ body {
     padding: 8px;
     border-radius: 4px;
     margin-bottom: 10px;
-    font-size: 12px;
+    font-size: 14px;
   }
 
 #top_nav {
@@ -28,14 +28,71 @@ body {
     background-color: #ffff;
     box-shadow: 0px 5px 5px 5px #eee;
 }
-#profile{
-  list-style: none;
-  color: #838383;
-  float: right;
+
+#searchInput {
+  width: 30%;
   padding: 10px;
+  margin: 5px 0px 5px 200px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: #f8f9fa;
+  transition: width 0.4s ease-in-out;
+}
+
+#searchInput:focus {
+  border: 2px solid #555;
+}
+
+#searchResults {
+  list-style-type: none;
+  position: relative;
+  background-color: #fff;
+  border-radius: 4px;
+  width: 27%;
+  margin: 5px 0px 5px 200px;
+  z-index: 1;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+a {
+  text-decoration: none;
+  color: #474747;
+
+}
+
+#searchResults li {
+  padding: 5px;
+  width: 100%;
+  margin: 0px 0px 0px -30px;
   cursor: pointer;
-  margin: 5px 50px 0px 0px;
-  font-weight: bold;
+}
+
+#searchResults li:hover {
+  background-color: #f5f5f5;
+}
+#cancelButton {
+  display: none;
+  background-color: #eee;
+  color: #7a7a7a;
+  border: 2px solid #eee;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  position: absolute;
+  right: 740px;
+  top: 15px;
+}
+
+#profile{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 20px;
+    width: 50px;
   }
 
 #profile-content {
@@ -43,6 +100,7 @@ body {
   list-style-type: none;
   padding: 0px;
   margin: 0;
+  z-index: 1;
   position: absolute;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
