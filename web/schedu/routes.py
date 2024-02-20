@@ -150,7 +150,7 @@ def register_student():
 @admin_required
 def register_teacher():
     """Handle the teacher registration route"""
-    form = TeacherRegForm()
+    form = TeacherRegForm()  
     return register_user(form, Teacher, "teacher")
 
 
