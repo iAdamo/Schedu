@@ -112,3 +112,22 @@
     color: red;
     margin-bottom: 10px;
 }
+
+.form-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.form-error ul {
+    margin: 0;
+    padding: 0;
+}
+
+.form-error li {
+    list-style-type: none;
+}

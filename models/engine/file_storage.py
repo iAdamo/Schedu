@@ -81,8 +81,6 @@ class FileStorage:
                 if obj.id == id:
                     return obj
         elif cls and id is None:
-            if isinstance(cls, str):
-                cls = classes[cls]
             return [obj for obj in self.__objects.values() if obj.__class__ == cls]
         else:
             return None
@@ -92,6 +90,14 @@ class FileStorage:
         if cls is not None:
             return len(self.all(cls))
         return len(self.all())
+
+    
+    def find(self, string):
+        """find and check for first occurrence of string"""
+        for obj in self.__objects.values():
+            if string in obj.__dict__.values():
+                return string
+        return None
 
     def close(self):
         """call reload() method for deserializing the JSON file to objects"""

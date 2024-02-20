@@ -6,9 +6,11 @@ from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
 from models.student import Student
+from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/students', strict_slashes=False)
+@jwt_required()
 def students():
     """returns a list of all students
     """
@@ -17,6 +19,7 @@ def students():
 
 
 @app_views.route('/students/<student_id>', strict_slashes=False)
+@jwt_required()
 def student(student_id):
     """returns a student object by id
     """
@@ -29,6 +32,7 @@ def student(student_id):
 @app_views.route('/students/<student_id>',
                  methods=['DELETE'],
                  strict_slashes=False)
+@jwt_required()
 def delete_student(student_id):
     """deletes a student object by id
     """
@@ -41,6 +45,7 @@ def delete_student(student_id):
 
 
 @app_views.route('/students', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def create_student():
     """creates a student object
     """
@@ -65,16 +70,17 @@ def create_student():
         abort(400, "The nin must be exactly 11 digits")
 
     # Check for duplicate nin
-    if any(s.nin == student["nin"] for s in existing_students):
+    if any(each_stud.nin == student["nin"] for each_stud in existing_students):
         abort(400, "A student with this nin already exists")
 
     # Check for duplicate email
-    if any(s.email == student["email"] for s in existing_students):
+    if any(each_stud.email == student["email"]
+           for each_stud in existing_students):
         abort(400, "A student with this email already exists")
 
     # Check for duplicate phone number
-    if any(s.phone_number == student["phone_number"]
-           for s in existing_students):
+    if any(each_stud.phone_number == student["phone_number"]
+           for each_stud in existing_students):
         abort(400, "A student with this phone number already exists")
 
     student = Student(**student)
@@ -84,6 +90,7 @@ def create_student():
 
 @app_views.route('/students/<student_id>',
                  methods=['PUT'], strict_slashes=False)
+@jwt_required()
 def update_student(student_id):
     """updates a student object
     """

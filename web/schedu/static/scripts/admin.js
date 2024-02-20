@@ -42,7 +42,7 @@ $(document).ready(function () {
   }
 
   // Example usage
-  performLogin('user1', 'password1');
+  performLogin('admin', 'admin');
 
   // Set up an interval to fetch and update data every 5 seconds
   setInterval(function () {
@@ -50,7 +50,7 @@ $(document).ready(function () {
     if (localStorage.getItem('jwtToken')) {
       fetchDataAndUpdate(localStorage.getItem('jwtToken'));
     }
-  }, 5000); // 5000 milliseconds = 5 seconds
+  }, 50000); // 5000 milliseconds = 5 seconds
 
   // function to perform dashboard refresh on click
   $('.logo').on('click', function () {
@@ -59,43 +59,106 @@ $(document).ready(function () {
   );
 
   // function to add dropdown functionality to REGISTRATION
-  var $dropdown = $('.dropdown');
-  var $dropdownContent = $('.dropdown-content');
+  const $dropdown = $('.dropdown');
+  const $dropdownContent = $('.dropdown-content');
 
   $dropdown.on('click', function (e) {
-      e.stopPropagation();
+    e.stopPropagation();
 
-      if ($dropdown.hasClass('open')) {
-          closeDropdown();
-      } else {
-          openDropdown();
-      }
+    if ($dropdown.hasClass('open')) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
   });
 
   $(document).on('click', function (e) {
-      if (!$(e.target).closest('.dropdown').length) {
-          closeDropdown();
-      }
+    if (!$(e.target).closest('.dropdown').length) {
+      closeDropdown();
+    }
   });
 
-  function openDropdown() {
-      const dropdownHTML = `
+  function openDropdown () {
+    const dropdownHTML = `
           <li><a href="/register/student">Student</a></li>
           <li><a href="/register/teacher">Teacher</a></li>
-          <li><a href="/register/student">Guardian</a></li>`;
+          <li><a href="/register/guardian">Guardian</a></li>`;
 
-      $dropdownContent.html(dropdownHTML);
-      $dropdown.addClass('open');
+    $dropdownContent.html(dropdownHTML);
+    $dropdown.addClass('open');
   }
 
-  function closeDropdown() {
-      $dropdownContent.empty();
-      $dropdown.removeClass('open');
+  function closeDropdown () {
+    $dropdownContent.empty();
+    $dropdown.removeClass('open');
   }
 
-// Function to show guardian section and hide student section
-$('#nextbutton').on('click', function () {
-  $('#studentForm').hide();
-  $('#guardianForm').show();
-});
+  // Function to show guardian section and hide student section
+  $('#nextbutton').on('click', function () {
+    $('#studentForm').hide();
+    $('#guardianForm').show();
+  });
+
+  // Search functionality
+  $('#searchInput').on('input', function () {
+    const Name = $(this).val();
+
+    // Check if the search term is empty and clear the results if needed
+    if (!Name.trim()) {
+      $('#searchResults').empty();
+      return;
+    }
+    searchByName(Name, localStorage.getItem('jwtToken'));
+  });
+  // Function to perform search by name
+  function searchByName (Name, jwtToken) {
+    $.ajax({
+      url: 'http://127.0.0.1:5001/api/v1/search',
+      type: 'POST',
+      contentType: 'application/json',
+      headers: {
+        Authorization: 'Bearer ' + jwtToken
+      },
+      data: JSON.stringify({ name: Name }),
+      success: function (data) {
+        displayResults(data);
+      },
+      error: function (error) {
+        console.error('Error in search:', error);
+      }
+    });
+  }
+  // Function to display search results
+  function displayResults (data) {
+    const resultsDiv = $('#searchResults');
+    resultsDiv.empty();
+
+    if (!data || data.length === 0) {
+      resultsDiv.append('<p>No results found.</p>');
+    } else {
+      data.forEach(function (result) {
+        resultsDiv.append('<li><a href="/profile">' + result + '</a></li>');
+      });
+    }
+  }
+  // Function to close search results when clicking outside the search input
+  $(document).on('click', function (event) {
+    if (!$(event.target).closest('#searchInput, #searchResults').length) {
+      $('#searchResults').empty();
+    }
+  });
+  // Function to clear search input and hide cancel button
+  $('#searchInput').on('input', function () {
+    if ($(this).val()) {
+      $('#cancelButton').show();
+    } else {
+      $('#cancelButton').hide();
+    }
+  });
+  // Function to clear search input and hide cancel button
+  $('#cancelButton').on('click', function () {
+    $('#searchInput').val('');
+    $('#searchResults').empty();
+    $(this).hide();
+  });
 });

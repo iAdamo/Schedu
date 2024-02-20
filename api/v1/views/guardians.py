@@ -6,9 +6,11 @@ from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
 from models.guardian import Guardian
+from flask_jwt_extended import jwt_required
 
 
 @app_views.route('/guardians', strict_slashes=False)
+@jwt_required()
 def guardians():
     """returns a list of all guardians
     """
@@ -17,6 +19,7 @@ def guardians():
 
 
 @app_views.route('/guardians/<guardian_id>', strict_slashes=False)
+@jwt_required()
 def guardian(guardian_id):
     """returns a guardian object by id
     """
@@ -29,6 +32,7 @@ def guardian(guardian_id):
 @app_views.route('/guardians/<guardian_id>',
                  methods=['DELETE'],
                  strict_slashes=False)
+@jwt_required()
 def delete_guardian(guardian_id):
     """deletes a guardian object by id
     """
@@ -41,6 +45,7 @@ def delete_guardian(guardian_id):
 
 
 @app_views.route('/guardians', methods=['POST'], strict_slashes=False)
+@jwt_required()
 def create_guardian():
     """creates a guardian object
     """
@@ -56,6 +61,7 @@ def create_guardian():
 
 @app_views.route('/guardians/<guardian_id>',
                  methods=['PUT'], strict_slashes=False)
+@jwt_required()
 def update_guardian(guardian_id):
     """updates a guardian object
     """

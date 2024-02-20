@@ -1,139 +1,100 @@
-from ast import pattern
-from flask_wtf import FlaskForm
-from wtforms import BooleanField, IntegerField, StringField, PasswordField, SubmitField, SelectField, DateField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
-from models import storage
+#!/usr/bin/env python3
 
-class StudentRegForm(FlaskForm):
+
+from flask_wtf import FlaskForm
+from wtforms import (
+    BooleanField,
+    StringField,
+    PasswordField,
+    SubmitField,
+    DateField)
+from wtforms.validators import (
+    DataRequired,
+    Email,
+    EqualTo,
+    Length,
+    ValidationError)
+from models import storage
+from wtforms.validators import Regexp
+
+
+class BaseRegistrationForm(FlaskForm):
+    first_name = StringField('First Name', validators=[
+        DataRequired(),
+        Length(min=3),
+        Regexp('^[A-Za-z]*$', message="First name must contain only letters")
+    ])
+    last_name = StringField('Last Name', validators=[
+        DataRequired(),
+        Length(min=3),
+        Regexp('^[A-Za-z]*$', message="Last name must contain only letters")
+    ])
+    middle_name = StringField('Middle Name', validators=[
+        DataRequired(),
+        Length(min=3),
+        Regexp('^[A-Za-z]*$', message="Middle name must contain only letters")
+    ])
+    email = StringField('Email', [Length(min=6, max=35), Email()])
+    nin = StringField('NIN', validators=[
+        DataRequired(),
+        Length(min=11, max=11),
+        Regexp('^[0-9]*$', message="NIN must contain only numbers")
+    ])
+    address = StringField('Address', validators=[DataRequired()])
+    date_of_birth = DateField(
+        'Date of Birth',
+        format='%Y-%m-%d',
+        validators=[
+            DataRequired()])
+    phone_number = StringField('Phone Number', validators=[
+        DataRequired(),
+        Length(min=11, max=11),
+        Regexp('^[0-9]*$', message="Phone number must contain only numbers")
+    ])
+    password = PasswordField('Password', validators=[
+        DataRequired(),
+        Regexp(
+            r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@%\-_])[A-Za-z\d@%\-_]{8,}$',
+            message=("Password must contain at least one uppercase letter, one lowercase letter, one digit, and any special character")
+        )
+    ])
+    confirm_password = PasswordField(
+        'Confirm Password', validators=[
+            DataRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
+
+    def validate_email(self, email):
+        record = storage.find(email.data)
+        if record == email.data:
+            raise ValidationError('Email already exists')
+
+    def validate_nin(self, nin):
+        record = storage.find(nin.data)
+        if record == nin.data:
+            raise ValidationError('NIN already exists')
+
+    def validate_phone_number(self, phone_number):
+        record = storage.find(phone_number.data)
+        if record == phone_number.data:
+            raise ValidationError('Phone number already exists')
+
+
+class StudentRegForm(BaseRegistrationForm):
     """Form to handle student registration
     """
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField("Last Name", validators=[DataRequired()])
-    email = StringField('Email', [Length(min=6, max=35), Email()])
-    nin = IntegerField('NIN', validators=[DataRequired()])
-    date_of_birth = DateField('Date of Birth', format='%Y-%m-%d', validators=[DataRequired()])
-    phone_number = StringField('Phone Number', validators=[DataRequired()])
-    address = StringField('Address', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField(
-        'Confirm Password', validators=[
-            DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
-    
-
-    def validate_email(self, email):
-        """Check if email already exists
-        """
-        student = storage.get("Student", None)
-        for stud in student:
-            if stud.email == email.data:
-                raise ValidationError('Email already exists')
-            
-    def validate_nin(self, nin):
-        """Check if NIN already exists
-        """
-        student = storage.get("Student", None)
-        for stud in student:
-            if stud.nin == nin.data:
-                raise ValidationError('NIN already exists')
-            
-    def validate_phone_number(self, phone_number):
-        """Check if phone number already exists
-        """
-        student = storage.get("Student", None)
-        for stud in student:
-            if stud.phone_number == phone_number.data:
-                raise ValidationError('Phone number already exists')
+    pass
 
 
-class TeacherRegForm(FlaskForm):
+class TeacherRegForm(BaseRegistrationForm):
     """Form to handle Teacher's registration
     """
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField("Last Name", validators=[DataRequired()])
-    email = StringField('Email', [Length(min=6, max=35), Email()])
-    nin = IntegerField('NIN', validators=[DataRequired()])
-    date_of_birth = DateField('Date of Birth', format='%Y-%m-%d', validators=[DataRequired()])
-    phone_number = IntegerField('Phone Number', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField(
-        'Confirm Password', validators=[
-            DataRequired(), EqualTo('password')])
-    subject = StringField('Subject', validators=[DataRequired()])
-    submit = SubmitField('Register')
+    pass
 
 
-    def validate_email(self, email):
-        """Check if email already exists
-        """
-        student = storage.get("Teacher", None)
-        print(student)
-        for stud in student:
-            if stud.email == email.data:
-                print(stud)
-                raise ValidationError('Email already exists')
-            
-    def validate_nin(self, nin):
-        """Check if NIN already exists
-        """
-        student = storage.get("Student", None)
-        for stud in student:
-            if stud.nin == nin.data:
-                raise ValidationError('NIN already exists')
-            
-    def validate_phone_number(self, phone_number):
-        """Check if phone number already exists
-        """
-        student = storage.get("Student", None)
-        for stud in student:
-            if stud.phone_number == phone_number.data:
-                raise ValidationError('Phone number already exists')
-
-class GuardianRegForm(FlaskForm):
+class GuardianRegForm(BaseRegistrationForm):
     """Form to handle Guardian registration
     """
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField("Last Name", validators=[DataRequired()])
-    email = StringField('Email', [Length(min=6, max=35), Email()])
-    nin = IntegerField('NIN', validators=[DataRequired()])
-    date_of_birth = DateField('Date of Birth', format='%Y-%m-%d', validators=[DataRequired()])
-    phone_number = IntegerField('Phone Number', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField(
-        'Confirm Password', validators=[
-            DataRequired(), EqualTo('password')])
-    student_id = StringField('Student ID', validators=[DataRequired()])
-    relationship_to_student = SelectField(
-        'Relationship to Student', choices=[
-            ('parent', 'Parent'), ('guardian', 'Guardian')])
-    submit = SubmitField('Register')
-    
-    
-    def validate_email(self, email):
-        """Check if email already exists
-        """
-        student = storage.get("Guardian", None)
-        print(student)
-        for stud in student:
-            if stud.email == email.data:
-                print(stud)
-                raise ValidationError('Email already exists')
-            
-    def validate_nin(self, nin):
-        """Check if NIN already exists
-        """
-        student = storage.get("Student", None)
-        for stud in student:
-            if stud.nin == nin.data:
-                raise ValidationError('NIN already exists')
-            
-    def validate_phone_number(self, phone_number):
-        """Check if phone number already exists
-        """
-        student = storage.get("Student", None)
-        for stud in student:
-            if stud.phone_number == phone_number.data:
-                raise ValidationError('Phone number already exists')
+    pass
 
 
 class LoginForm(FlaskForm):

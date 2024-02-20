@@ -39,7 +39,6 @@ class DBStorage:
         if MGT_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
-
     def all(self, cls=None):
         """query on the current database session"""
         new_dict = {}
@@ -93,6 +92,14 @@ class DBStorage:
     def count(self, cls=None):
         """count the number of objects in storage"""
         return self.__session.query(cls).count()
+    
+    def find(self, string):
+        """find and check for first occurrence of string"""
+        for cls in classes.values():
+            for obj in self.__session.query(cls).all():
+                if string in obj.__dict__.values():
+                    return string
+        return None
 
     def close(self):
         """call remove() method on the private session attribute"""
