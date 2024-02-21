@@ -2,10 +2,7 @@
 """ Index file for api/v1
 """
 
-from flask_jwt_extended import (
-    create_access_token,
-    get_jwt_identity,
-    jwt_required)
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from api.v1.views import app_views
 from models.admin import Admin
 from models.teacher import Teacher
@@ -13,28 +10,14 @@ from models.student import Student
 from models.guardian import Guardian
 from flask import jsonify, request
 from models import storage
+from flask import abort, jsonify, request
 
-# Define users (for demonstration purposes)
-users = {
-    'miguel': 'python',
-    'user1': 'password1',
-    'user2': 'password2'
+objects = {
+    "Teacher": Teacher,
+    "Student": Student,
+    "Guardian": Guardian,
+    "Admin": Admin
 }
-
-
-# User login endpoint
-@app_views.route('/login', methods=['POST'], strict_slashes=False)
-def login():
-    username = request.json.get('username')
-    password = request.json.get('password')
-
-    if username in users and users[username] == password:
-        access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token), 200
-    else:
-        return jsonify({'error': 'Invalid credentials'}), 401
-
-# Protected endpoint requiring JWT authentication
 
 
 @app_views.route('/data', methods=['GET'], strict_slashes=False)
@@ -43,9 +26,8 @@ def get_data():
     current_user = get_jwt_identity()
 
     data = {
-        'user1': {'info': 'Data for user1'},
-        'user2': {'info': 'Data for user2'},
-        'miguel': {'info': 'Data for miguel'}
+        'user': {'info': 'Data for user'},
+        'admin': {'info': 'Data for admin'}
     }
 
     user_data = data.get(
@@ -66,15 +48,39 @@ def status():
 @jwt_required()
 def stats():
     """ Retrieves the number of each object by type """
-    current_user = get_jwt_identity()
-
-    # You can customize the response or logic based on the authenticated user
-    # if needed
-
-    objects = {
-        "Teacher": Teacher,
-        "Student": Student,
-        "Guardian": Guardian,
-        "Admin": Admin
-    }
     return jsonify({key: storage.count(obj) for key, obj in objects.items()})
+
+
+@app_views.route('/search', strict_slashes=False)
+@jwt_required()
+def search():
+    """searches for a specific value in the database
+    
+    curl -X POST -H "Content-Type: application/json" -H "Authorization:
+    Bearer " -d '{"first_name": "A"}' http://localhost:5001/api/v1/search
+    """
+    # currently every user can search for every other user
+    # this should be changed to only the admins being able to search for everyone
+    # if not current_user.is_admin:
+    #     return jsonify({"error": "Unauthorized"}), 401
+    results = []
+    for obj in storage.all().values():
+        obj_dict = obj.to_dict()
+        if 'name' in obj_dict and obj_dict['name'].lower().startswith(request.get_json()['name'].lower()):
+            results.append(obj_dict['name'])
+    return jsonify(results)
+
+@app_views.route('/users/<user>', strict_slashes=False)
+@jwt_required()
+def users(user):
+    """ Retrieve users by id """
+    user = request.get_json()
+    if user is None:
+        abort(400, "Not a JSON")
+    if "user_id" not in user:
+        abort(400, "Missing id")
+        
+    user = storage.get(None, user['user_id'])
+    if user is None:
+        abort(404, "Not found")
+    return jsonify(user.to_dict())

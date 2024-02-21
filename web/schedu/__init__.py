@@ -29,4 +29,5 @@ def admin_required(func):
         return func(*args, **kwargs)
     return decorated_function
 
+
 from web.schedu import routes

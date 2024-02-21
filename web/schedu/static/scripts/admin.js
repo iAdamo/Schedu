@@ -42,15 +42,17 @@ $(document).ready(function () {
   }
 
   // Example usage
-  performLogin('user1', 'password1');
+  performLogin('admin', 'admin');
+
+  jwtToken = localStorage.getItem('jwtToken');
 
   // Set up an interval to fetch and update data every 5 seconds
   setInterval(function () {
     // Fetch and update data only if the JWT token is available
-    if (localStorage.getItem('jwtToken')) {
-      fetchDataAndUpdate(localStorage.getItem('jwtToken'));
+    if (jwtToken) {
+      fetchDataAndUpdate(jwtToken);
     }
-  }, 5000); // 5000 milliseconds = 5 seconds
+  }, 50000); // 5000 milliseconds = 5 seconds
 
   // function to perform dashboard refresh on click
   $('.logo').on('click', function () {
@@ -59,84 +61,152 @@ $(document).ready(function () {
   );
 
   // function to add dropdown functionality to REGISTRATION
-  var $dropdown = $('.dropdown');
-  var $dropdownContent = $('.dropdown-content');
+  const $dropdown = $('.dropdown');
+  const $dropdownContent = $('.dropdown-content');
 
   $dropdown.on('click', function (e) {
-      e.stopPropagation();
+    e.stopPropagation();
 
-      if ($dropdown.hasClass('open')) {
-          closeDropdown();
-      } else {
-          openDropdown();
-      }
+    if ($dropdown.hasClass('open')) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
   });
 
   $(document).on('click', function (e) {
-      if (!$(e.target).closest('.dropdown').length) {
-          closeDropdown();
-      }
+    if (!$(e.target).closest('.dropdown').length) {
+      closeDropdown();
+    }
   });
 
-  function openDropdown() {
-      const dropdownHTML = `
+  function openDropdown () {
+    const dropdownHTML = `
           <li><a href="/register/student">Student</a></li>
           <li><a href="/register/teacher">Teacher</a></li>
           <li><a href="/register/guardian">Guardian</a></li>`;
 
-      $dropdownContent.html(dropdownHTML);
-      $dropdown.addClass('open');
+    $dropdownContent.html(dropdownHTML);
+    $dropdown.addClass('open');
   }
 
-  function closeDropdown() {
-      $dropdownContent.empty();
-      $dropdown.removeClass('open');
+  function closeDropdown () {
+    $dropdownContent.empty();
+    $dropdown.removeClass('open');
   }
 
-// Function to show guardian section and hide student section
-$('#guardianBtn').on('click', function () {
-  $('#studentForm').hide();
-  $('#guardianForm').show();
-});
+  // Function to show guardian section and hide student section
+  $('#nextbutton').on('click', function () {
+    $('#studentForm').hide();
+    $('#guardianForm').show();
+  });
 
-});
-$('#studentForm').submit(function (e) {
-  e.preventDefault(); // Prevent default form submission
-  var formData = $(this).serialize(); // Serialize form data
+  // Search functionality
+  $('#searchInput').on('input', function () {
+    const Name = $(this).val();
+
+    // Check if the search term is empty and clear the results if needed
+    if (!Name.trim()) {
+      $('#searchResults').empty();
+      return;
+    }
+    searchByName(Name, jwtToken);
+  });
+  // Function to perform search by name
+  function searchByName (Name, jwtToken) {
+    $.ajax({
+      url: 'http://127.0.0.1:5001/api/v1/search',
+      type: 'GET',
+      contentType: 'application/json',
+      headers: {
+        Authorization: 'Bearer ' + jwtToken
+      },
+      data: JSON.stringify({ name: Name }),
+      success: function (data) {
+        displayResults(data);
+      },
+      error: function (error) {
+        console.error('Error in search:', error);
+      }
+    });
+  }
+  // Function to display search results
+  function displayResults (data) {
+    const resultsDiv = $('#searchResults');
+    resultsDiv.empty();
+
+    if (!data || data.length === 0) {
+      resultsDiv.append('<p>No results found.</p>');
+    } else {
+      data.forEach(function (result) {
+        ```<li><form method="post"  action="/profile/{{ user.id }}/"></form>
+                    <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+                    <input id="profile-button" type="submit" data-user-id="{{ user.id }}" value="Profile">
+                </form></li>```
+        resultsDiv.append('<li id="profile-button" data-user-id="' + result.id + '">' + result.name + '</li>');
+      });
+    }
+  }
+
+  // Function to close search results when clicking outside the search input
+  $(document).on('click', function (event) {
+    if (!$(event.target).closest('#searchInput, #searchResults').length) {
+      $('#searchResults').empty();
+    }
+  });
+  // Function to clear search input and hide cancel button
+  $('#searchInput').on('input', function () {
+    if ($(this).val()) {
+      $('#cancelButton').show();
+    } else {
+      $('#cancelButton').hide();
+    }
+  });
+  // Function to clear search input and hide cancel button
+  $('#cancelButton').on('click', function () {
+    $('#searchInput').val('');
+    $('#searchResults').empty();
+    $(this).hide();
+  });
+
+  // Function to render user results
+  function renderUserData (data) {
+    if (data == null) {
+      location.reload();
+    } else {
+      $('#name').text(data.name);
+      $('#first_name').text(data.first_name);
+      $('#last_name').text(data.last_name);
+      $('#middle_name').text(data.middle_name);
+      $('#email').text(data.email);
+      $('#nin').text(data.nin);
+      $('#date_of_birth').text(data.date_of_birth);
+      $('#phone_number').text(data.phone_number);
+      $('#address').text(data.address); 
+      $('#role').text(data.role);
+      $('#registered_at').text(data.registered_at);
+      $('#updated_at').text(data.updated_at);
+      $('#user_id').text(data.id);
+    };
+  };
+  // Function that loads profile information
+  // Extract the user ID from the URL
+  var path = window.location.pathname; // e.g., "/profile/123"
+  var pathParts = path.split('/'); // e.g., ["", "profile", "123"]
+  var userId = pathParts[pathParts.length - 1]; // The last part is the ID
+
+  // Sending a GET request to retrieve user information using $.ajax()
+  console.log('userId:', userId);
   $.ajax({
-    url: '/register/student', // Backend route for student registration
-    type: 'POST',
-    data: formData,
-    success: function (response) {
-      // Handle success response
-      console.log('Student registration successful');
-      // Optionally, redirect the user or show a success message
+    url: 'http://127.0.0.1:5001/api/v1/users/' + userId,
+    type: 'GET', 
+    contentType: 'application/json',
+    headers: {
+      Authorization: 'Bearer ' + jwtToken
     },
-    error: function (xhr, status, error) {
-      // Handle error
-      console.error('Error during student registration:', error);
-      // Optionally, display an error message to the user
+    success: function (data) {
+      renderUserData(data);
     }
   });
 });
 
-// Form submission handling for guardian registration
-$('#guardianForm').submit(function (e) {
-  e.preventDefault(); // Prevent default form submission
-  var formData = $(this).serialize(); // Serialize form data
-  $.ajax({
-    url: '/register/guardian', // Backend route for guardian registration
-    type: 'POST',
-    data: formData,
-    success: function (response) {
-      // Handle success response
-      console.log('Guardian registration successful');
-      // Optionally, redirect the user or show a success message
-    },
-    error: function (xhr, status, error) {
-      // Handle error
-      console.error('Error during guardian registration:', error);
-      // Optionally, display an error message to the user
-    }
-  });
-});

@@ -23,12 +23,7 @@ class Admin(UserMixin, BaseModel, Base):
         email = Column(String(128), nullable=False, unique=True)
         role = Column(String(128), nullable=False)
     else:
-        id = ""
-        name = ""
-        email = ""
-        role = "admin"
-
-    def __init__(self, *args, **kwargs):
-        """ Initializes admin
-        """
-        super().__init__(*args, **kwargs)
+        def __init__(self, *args, **kwargs):
+            """ Initializes admin
+            """
+            super().__init__(*args, **kwargs)

@@ -1,68 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sessions new | Schedu</title>
-  <link rel="stylesheet" href="../static/styles/login.css">
-  <link rel="shortcut icon" href="../static/images/sch_favicon.png" type="image/x-icon">
+    <title></title>
+    <meta charset="utf-8">
+    
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#202428">
+
+    <link rel="manifest" href="">
+
+    <link rel="icon" type="image/x-icon" href="">
+
+    <!--Target the entire viewport of the viewing device-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Connection to google icon library-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Connection to google font library-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
+    <!--Connection to jQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../static/scripts/login.js"></script>
+
+    <!--Connection to external stylesheet-->
+    <link rel="stylesheet" href="../static/styles/login.css?{{ cached_id }}">
+    <link rel="shortcut icon" href="../static/images/sch_favicon.png?{{ cached_id }}" type="image/x-icon">
+
+    <style type="text/css">
+        #resendLink:link, #resendLink:visited, #resendLink:hover, #resendLink:active {
+            color: inherit;
+        }
+        #resendLink:hover {
+            text-decoration: none;
+        }
+        
+        #formContainer {
+            width: 400px;
+            min-height: 370px;
+            background-color: #fff;
+            border: 1px solid grey;
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .flexContainer {
+            display: flex;
+            justify-content: center;
+        }
+
+        @media screen and (min-width : 800px) {
+            #imgFlex {
+                margin-top: 50px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <main>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class=flashes>
-          {% for message in messages %}
-          <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-    <article>
-      <div class="logged_form">
-        <div class="logo"></div>
-        <form method="post" action="/auth/sign_in">
-          <!-- Other form fields (e.g., username and password) go here -->
-          <!-- CSRF Token -->
-          <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
-          <!-- School ID field -->
-          <div class="field">
-            <label class="label-control" for="user_id">School ID</label>
+    <div class="flexContainer" id="imgFlex">
+        <div id="logoWrapper">
+            <img src="" style="transform: scale(0.5, 0.5)">
+        </div>
+    </div>
+    <div class="flexContainer">
+        <div id="formContainer">
+            <form method="POST" action="/auth/sign_in">
+                <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+                <div>
+                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-circle" class="svg-inline--fa fa-user-circle fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" width="60px" height="60px"><path fill="#777" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"></path></svg>
+                </div>
+                <div style="font-weight: bold; font-size: 1.2em; color: #555">
+                    Log in
+                </div>
+                <br>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div id="notify">{{ message }}</div> <br>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <div>
+                    <input type="text" name="id" placeholder="School ID" class="phoneNoAndPass" required autocomplete="on" value="{{ id }}">
+                </div>
+                <br>
+                <div>
+                    <input type="password" name="password" placeholder="Password" class="phoneNoAndPass" required autocomplete="off" value="
+                    {{ password }}">
+                </div>
+                <br><input type="hidden" name="fvt" id="fvt" class="input" value="">
+                <div>
+                    <input type="submit" name="submit" value="Log in" id="submit" data-disable-with="Log in">
+                </div>
+            </form>
             <br>
-            <input autofocus="autofocus" class="form-control" type="text" name="id" id="user_id" value="{{ id }}">
-          </div>
-
-          <!-- Password field -->
-          <div class="field">
-            <label class="control-label" for="user_password">Password</label>
-            <br>
-            <input autocomplete="off" class="form-control" type="password" name="password" id="user_password" value="{{ password }}">
-          </div>
-
-          <!-- Remember me checkbox -->
+            <!-- Remember me checkbox -->
           <div class="field">
             <input name="remember_me" type="hidden" value="0">
             <input type="checkbox" value="1" name="remember_me" id="user_remember_me">
             <label class="control-label" for="user_remember_me">Remember me</label>
           </div>
-          
-          <!-- Submit button -->
-          <div class="actions">
-            <input type="submit" name="submit" value="Log in" class="btn btn-primary" data-disable-with="Log in">
-          </div>
-        </form>
-
-        <!-- Forget password -->
-        <ul id="devise_links" class="gap">
-          <li>
-            <a href="/auth/password/new">Forgot your password?</a>
-          </li>
-        </ul>
-      </div>
-    </article>
-    <div class="copyright">Copyright © 2024 Schedu Team, All rights reserved.</div>
-  </main>
-  
-  
+          <br>
+            <div id="fr">
+                <div style="width: 50%; text-align: left;">
+                    <a class="exLink" href="forgot-password">Forgot password?</a>
+                </div>
+            </div>
+        </div>
+   </div>
 </body>
 </html>
