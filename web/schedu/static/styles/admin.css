@@ -110,7 +110,7 @@ a {
   display: block;
 }
 
-.profile-button, .logout-form {
+#profile-button, .logout-form {
     background-color: transparent;
     color: #4b4a4a;
     border: none;

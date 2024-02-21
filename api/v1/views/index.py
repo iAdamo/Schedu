@@ -10,7 +10,7 @@ from models.student import Student
 from models.guardian import Guardian
 from flask import jsonify, request
 from models import storage
-
+from flask import abort, jsonify, request
 
 objects = {
     "Teacher": Teacher,
@@ -51,7 +51,7 @@ def stats():
     return jsonify({key: storage.count(obj) for key, obj in objects.items()})
 
 
-@app_views.route('/search', methods=['POST'], strict_slashes=False)
+@app_views.route('/search', strict_slashes=False)
 @jwt_required()
 def search():
     """searches for a specific value in the database
@@ -69,3 +69,18 @@ def search():
         if 'name' in obj_dict and obj_dict['name'].lower().startswith(request.get_json()['name'].lower()):
             results.append(obj_dict['name'])
     return jsonify(results)
+
+@app_views.route('/users/<user>', strict_slashes=False)
+@jwt_required()
+def users(user):
+    """ Retrieve users by id """
+    user = request.get_json()
+    if user is None:
+        abort(400, "Not a JSON")
+    if "user_id" not in user:
+        abort(400, "Missing id")
+        
+    user = storage.get(None, user['user_id'])
+    if user is None:
+        abort(404, "Not found")
+    return jsonify(user.to_dict())

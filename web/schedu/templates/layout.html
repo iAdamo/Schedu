@@ -25,9 +25,10 @@
 
         <div id="profile">{{ user.first_name }}
             <ul id="profile-content">
-                <li><form method="post" action="/profile">
+                <!--<li id="profile-button" data-user-id="{{ user.id }}">Profile</li>--> 
+                <li><form method="post"  action="/profile/{{ user.id }}/"></form>
                     <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
-                    <input class="profile-button" type="submit" value="Profile">
+                    <input id="profile-button" type="submit" value="Profile">
                 </form></li>
                 <li><form method="post" action="/auth/sign_out">
                     <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
@@ -68,7 +69,7 @@
         </div>
         {% endif %}
     </div>
-    {% if request.endpoint in ['register_guardian', 'register_student', register_teacher] %}
+    {% if request.endpoint in ['register_guardian', 'register_student', 'register_teacher'] %}
     <div class="student-registration-form">
         <h1>{{ request.endpoint.split('_')[1]|capitalize }} Registration</h1>
         <form id="guardianForm" method="post" action="/register/{{ request.endpoint.split('_')[1] }}">

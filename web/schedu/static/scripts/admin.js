@@ -44,11 +44,13 @@ $(document).ready(function () {
   // Example usage
   performLogin('admin', 'admin');
 
+  jwtToken = localStorage.getItem('jwtToken');
+
   // Set up an interval to fetch and update data every 5 seconds
   setInterval(function () {
     // Fetch and update data only if the JWT token is available
-    if (localStorage.getItem('jwtToken')) {
-      fetchDataAndUpdate(localStorage.getItem('jwtToken'));
+    if (jwtToken) {
+      fetchDataAndUpdate(jwtToken);
     }
   }, 50000); // 5000 milliseconds = 5 seconds
 
@@ -108,13 +110,13 @@ $(document).ready(function () {
       $('#searchResults').empty();
       return;
     }
-    searchByName(Name, localStorage.getItem('jwtToken'));
+    searchByName(Name, jwtToken);
   });
   // Function to perform search by name
   function searchByName (Name, jwtToken) {
     $.ajax({
       url: 'http://127.0.0.1:5001/api/v1/search',
-      type: 'POST',
+      type: 'GET',
       contentType: 'application/json',
       headers: {
         Authorization: 'Bearer ' + jwtToken
@@ -137,10 +139,15 @@ $(document).ready(function () {
       resultsDiv.append('<p>No results found.</p>');
     } else {
       data.forEach(function (result) {
-        resultsDiv.append('<li><a href="/profile">' + result + '</a></li>');
+        ```<li><form method="post"  action="/profile/{{ user.id }}/"></form>
+                    <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
+                    <input id="profile-button" type="submit" data-user-id="{{ user.id }}" value="Profile">
+                </form></li>```
+        resultsDiv.append('<li id="profile-button" data-user-id="' + result.id + '">' + result.name + '</li>');
       });
     }
   }
+
   // Function to close search results when clicking outside the search input
   $(document).on('click', function (event) {
     if (!$(event.target).closest('#searchInput, #searchResults').length) {
@@ -161,4 +168,45 @@ $(document).ready(function () {
     $('#searchResults').empty();
     $(this).hide();
   });
+
+  // Function to render user results
+  function renderUserData (data) {
+    if (data == null) {
+      location.reload();
+    } else {
+      $('#name').text(data.name);
+      $('#first_name').text(data.first_name);
+      $('#last_name').text(data.last_name);
+      $('#middle_name').text(data.middle_name);
+      $('#email').text(data.email);
+      $('#nin').text(data.nin);
+      $('#date_of_birth').text(data.date_of_birth);
+      $('#phone_number').text(data.phone_number);
+      $('#address').text(data.address); 
+      $('#role').text(data.role);
+      $('#registered_at').text(data.registered_at);
+      $('#updated_at').text(data.updated_at);
+      $('#user_id').text(data.id);
+    };
+  };
+  // Function that loads profile information
+  // Extract the user ID from the URL
+  var path = window.location.pathname; // e.g., "/profile/123"
+  var pathParts = path.split('/'); // e.g., ["", "profile", "123"]
+  var userId = pathParts[pathParts.length - 1]; // The last part is the ID
+
+  // Sending a GET request to retrieve user information using $.ajax()
+  console.log('userId:', userId);
+  $.ajax({
+    url: 'http://127.0.0.1:5001/api/v1/users/' + userId,
+    type: 'GET', 
+    contentType: 'application/json',
+    headers: {
+      Authorization: 'Bearer ' + jwtToken
+    },
+    success: function (data) {
+      renderUserData(data);
+    }
+  });
 });
+

@@ -21,7 +21,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
-app.config['JWT_SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['JWT_SECRET_KEY'] = "aaaaaaa"
 jwt = JWTManager(app)
 app.register_blueprint(app_views)
 

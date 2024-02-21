@@ -17,7 +17,6 @@ from web.schedu.forms import (
     TeacherRegForm)
 from web.schedu import *
 
-
 # ------------------------------- Login Manager ------------------------------
 @login_manager.user_loader
 def load_user(user_id):
@@ -161,6 +160,8 @@ def register_guardian():
     form = GuardianRegForm()
     return register_user(form, Guardian, "guardian")
 
-# ----------------------------------------------------------------------------
-
-# --------------------------------Search-----------------------------------------
+@app.route('/profile/<user_id>', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
+def profile(user_id):
+    """Handle the profile route"""
+    return render_template('profile.html', user_id=user_id, cache_id=str(uuid.uuid4()))
