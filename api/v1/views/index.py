@@ -37,7 +37,6 @@ def get_data():
 
 
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def status():
     """ Return the status of the API """
     current_user = get_jwt_identity()
@@ -45,15 +44,13 @@ def status():
 
 
 @app_views.route('/stats', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def stats():
     """ Retrieves the number of each object by type """
     return jsonify({key: storage.count(obj) for key, obj in objects.items()})
 
 
-@app_views.route('/search', strict_slashes=False)
-@jwt_required()
-def search():
+@app_views.route('/search/<char>', strict_slashes=False)
+def search(char):
     """searches for a specific value in the database
     
     curl -X POST -H "Content-Type: application/json" -H "Authorization:
@@ -66,21 +63,15 @@ def search():
     results = []
     for obj in storage.all().values():
         obj_dict = obj.to_dict()
-        if 'name' in obj_dict and obj_dict['name'].lower().startswith(request.get_json()['name'].lower()):
-            results.append(obj_dict['name'])
+        if 'name' in obj_dict and char.lower() in obj_dict['name'].lower():
+            results.append({'id': obj_dict['id'], 'name': obj_dict['name']})
     return jsonify(results)
 
-@app_views.route('/users/<user>', strict_slashes=False)
-@jwt_required()
-def users(user):
+@app_views.route('/profile/<userid>', strict_slashes=False)
+def profiles(userid):
     """ Retrieve users by id """
-    user = request.get_json()
-    if user is None:
-        abort(400, "Not a JSON")
-    if "user_id" not in user:
-        abort(400, "Missing id")
-        
-    user = storage.get(None, user['user_id'])
-    if user is None:
-        abort(404, "Not found")
-    return jsonify(user.to_dict())
+    user = storage.all().values()
+    for obj_dict in user:
+        if obj_dict.id == userid:
+            return jsonify(obj_dict.to_dict())
+    return jsonify({"error": "Not found"}), 404

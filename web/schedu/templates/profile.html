@@ -8,6 +8,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="../static/scripts/admin.js?{{ cached_id }}"></script>
     <link rel="stylesheet" href="../static/styles/profile.css">
 </head>
 <body>
@@ -17,15 +18,15 @@
                 <div class="panel">
                     <div class="user-heading round">
                         <a href="#">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt> <!-- Profile picture -->
+                            <img src="../static/images/schedu.png" alt> <!-- Profile picture -->
                         </a>
                         <h1 id="name"></h1>
-                        <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="afcbcad6cbcad6efdbc7caeac2cec6c381ccc0c2">[email&#160;protected]</a></p>
                     </div>
                     <ul class="nav nav-pills nav-stacked">
                         <li class="active"><a href="#"> <i class="fa fa-user"></i> Profile</a></li>
                         <li><a href="#"> <i class="fa fa-calendar"></i> Recent Activity <span class="label label-warning pull-right r-activity">9</span></a></li>
                         <li><a href="#"> <i class="fa fa-edit"></i> Edit profile</a></li>
+                        <li><a href="/dashboard"> <i class="fa fa-home"></i> Dashboard</a></li>
                     </ul>
                 </div>
             </div>
@@ -46,34 +47,34 @@
                 </div>
                 <div class="panel">
                     <div class="bio-graph-heading">
-                        Aliquam ac magna metus. Nam sed arcu non tellus fringilla fringilla ut vel ispum. Aliquam ac magna metus.
+                        This is the begining of a great journey.
                     </div>
                     <div class="panel-body bio-graph-info">
-                        <h1>Bio Graph</h1>
+                        <h1>Bio Data</h1>
                         <div class="row">
                             <div class="bio-row">
-                                <p><span>First Name </span>: Camila</p>
+                                <p><span>First Name </span>: <span id="first_name"></span></p>
                             </div>
                             <div class="bio-row">
-                                <p><span>Last Name </span>: Smith</p>
+                                <p><span>Last Name </span>: <span id="last_name"></span></p>
                             </div>
                             <div class="bio-row">
-                                <p><span>Country </span>: Australia</p>
+                                <p><span>State Of Origin </span>: <span id="state"></span></p>
                             </div>
                             <div class="bio-row">
-                                <p><span>Birthday</span>: 13 July 1983</p>
+                                <p><span>Date Of Birth</span>: <span id="date_of_birth"></span></p>
                             </div>
                             <div class="bio-row">
-                                <p><span>Occupation </span>: UI Designer</p>
+                                <p><span>Role</span>: <span id="__class__"></span></p>
                             </div>
                             <div class="bio-row">
-                                <p><span>Email </span>: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="274d544a4e534f67414b46534b46450944484a">[email&#160;protected]</a></p>
+                                <p><span>Email </span>: <span id="email"></span></p>
                             </div>
                             <div class="bio-row">
-                                <p><span>Mobile </span>: (12) 03 4567890</p>
+                                <p><span>Address </span>: <span id="address"></span></p>
                             </div>
                             <div class="bio-row">
-                                <p><span>Phone </span>: 88 (02) 123456</p>
+                                <p><span>Phone </span>: <span id="phone_number"></span></p>
                             </div>
                         </div>
                     </div>
