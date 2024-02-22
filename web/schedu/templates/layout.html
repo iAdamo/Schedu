@@ -26,10 +26,7 @@
         <div id="profile">{{ user.first_name }}
             <ul id="profile-content">
                 <!--<li id="profile-button" data-user-id="{{ user.id }}">Profile</li>--> 
-                <li><form method="post"  action="/profile/{{ user.id }}/"></form>
-                    <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
-                    <input id="profile-button" type="submit" value="Profile">
-                </form></li>
+                <li id="profile-button"><a href="/profile/{{ user.id }}">Profile</a></li>
                 <li><form method="post" action="/auth/sign_out">
                     <input type="hidden" name="csrf_token" value="{{ form.csrf_token._value() }}">
                     <input class="logout-form" type="submit" value="Logout">

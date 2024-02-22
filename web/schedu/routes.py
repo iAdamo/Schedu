@@ -160,7 +160,8 @@ def register_guardian():
     form = GuardianRegForm()
     return register_user(form, Guardian, "guardian")
 
-@app.route('/profile/<user_id>', methods=['GET', 'POST'], strict_slashes=False)
+
+@app.route('/profile/<user_id>', strict_slashes=False)
 @login_required
 def profile(user_id):
     """Handle the profile route"""
