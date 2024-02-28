@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>SchEdu - School Management System</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/favicon.ico" >
+
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Flaticon Font -->
+    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid bg-light position-relative shadow">
+        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
+            <a href="" class="navbar-brand font-weight-bold text-secondary" style="font-size: 50px;">
+                <img src="img/logo.png" width="40%" height="10%" alt="Logo">
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav font-weight-bold mx-auto py-0">
+                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                    <a href="https://github.com/iAdamo/Schedu" class="nav-item nav-link">About</a>
+                    <a href="#" class="nav-item nav-link">Pricing</a>
+                  <!--  <a href="#" class="nav-item nav-link">Product</a> -->
+                    <a href="#" class="nav-item nav-link">Reviews</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Products</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="#" class="dropdown-item">RegistrationForm</a> 
+                            <a href="#" class="dropdown-item">Student Management Form </a>
+                            <a href="#" class="dropdown-item">Academics Management</a>
+                            <a href="#" class="dropdown-item">Lesson Scheduling</a>
+                            <a href="#" class="dropdown-item">Attendance Management</a>
+                            <a href="#" class="dropdown-item">Examination Management</a>
+                        </div>
+                    </div>
+                    <a href="#" class="nav-item nav-link">Contact</a>
+                </div>
+                <a href="" class="btn btn-primary px-4">Visit the app</a>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Header Start -->
+    <div class="container-fluid bg-primary px-0 px-md-5 mb-5">
+        <div class="row align-items-center px-3">
+            <div class="col-lg-6 text-center text-lg-left">
+                <h1 class="display-3 font-weight-bold text-white">SchEdu</h1>
+                <h4 class="text-white mb-4 mt-5 mt-lg-0">School Management System </h4>
+                <h3 class="text-white mb-4">
+                    Grow Your Student Base & Revenue with The #1 School Management System 
+                    <br>
+                    SchEdu is a revolutionary cloud-based software 
+                    designed for the needs of tuition or enrichment centres & schools.                      
+                    <p>
+                    Whether you run an education centre, arts school or a preschool, 
+                    get everything you need to manage and grow your school the smart way.
+                    </p>
+                </h3>
+                <a href="" class="btn btn-secondary mt-1 py-3 px-5">Visit the App</a>
+            </div>
+            <div class="col-lg-6 text-center text-lg-right">
+                <img class="img-fluid mt-5" src="img/header.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+
+    <!-- Facilities Start -->
+    <!--<div class="container-fluid pt-5">
+        <div class="container pb-3">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 pb-1">
+                    <div class="d-flex bg-light shadow-sm border-top rounded mb-4" style="padding: 30px;">
+                        <i class="flaticon-050-fence h1 font-weight-normal text-primary mb-3"></i>
+                        <div class="pl-4">
+                            <h4>Play Ground</h4>
+                            <p class="m-0">Kasd labore kasd et dolor est rebum dolor ut, clita dolor vero lorem amet elitr vero...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 pb-1">
+                    <div class="d-flex bg-light shadow-sm border-top rounded mb-4" style="padding: 30px;">
+                        <i class="flaticon-022-drum h1 font-weight-normal text-primary mb-3"></i>
+                        <div class="pl-4">
+                            <h4>Music and Dance</h4>
+                            <p class="m-0">Kasd labore kasd et dolor est rebum dolor ut, clita dolor vero lorem amet elitr vero...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 pb-1">
+                    <div class="d-flex bg-light shadow-sm border-top rounded mb-4" style="padding: 30px;">
+                        <i class="flaticon-030-crayons h1 font-weight-normal text-primary mb-3"></i>
+                        <div class="pl-4">
+                            <h4>Arts and Crafts</h4>
+                            <p class="m-0">Kasd labore kasd et dolor est rebum dolor ut, clita dolor vero lorem amet elitr vero...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 pb-1">
+                    <div class="d-flex bg-light shadow-sm border-top rounded mb-4" style="padding: 30px;">
+                        <i class="flaticon-017-toy-car h1 font-weight-normal text-primary mb-3"></i>
+                        <div class="pl-4">
+                            <h4>Safe Transportation</h4>
+                            <p class="m-0">Kasd labore kasd et dolor est rebum dolor ut, clita dolor vero lorem amet elitr vero...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 pb-1">
+                    <div class="d-flex bg-light shadow-sm border-top rounded mb-4" style="padding: 30px;">
+                        <i class="flaticon-025-sandwich h1 font-weight-normal text-primary mb-3"></i>
+                        <div class="pl-4">
+                            <h4>Healthy food</h4>
+                            <p class="m-0">Kasd labore kasd et dolor est rebum dolor ut, clita dolor vero lorem amet elitr vero...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 pb-1">
+                    <div class="d-flex bg-light shadow-sm border-top rounded mb-4" style="padding: 30px;">
+                        <i class="flaticon-047-backpack h1 font-weight-normal text-primary mb-3"></i>
+                        <div class="pl-4">
+                            <h4>Educational Tour</h4>
+                            <p class="m-0">Kasd labore kasd et dolor est rebum dolor ut, clita dolor vero lorem amet elitr vero...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Facilities Start -->
+
+
+    <!-- Features Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5">
+                    <img class="img-fluid rounded mb-5 mb-lg-0" src="img/scheduregisterpage.png" alt="">
+                </div>
+                <div class="col-lg-7">
+                    <h1 class="mb-4">Registration Form</h1>
+                    <div class="row pt-2 pb-4">
+                        <div class="col-6 col-md-8">
+                            <ul class="list-inline m-0">
+                                <li class="py-2 border-top border-bottom"><i class="fa fa-check text-primary mr-3"></i>E-registration forms to replace paper forms and eliminate data entry, with e-signing of terms & conditions</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Student entry is added the CRM once the registration form is submitted</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Automated email with completed registration form is sent to the parent</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Customise with your own form fields</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Advanced forms with real-time class capacity and schedule can be implemented</li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <a href="" class="btn btn-primary mt-2 py-2 px-4">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5">
+                    <img class="img-fluid rounded mb-5 mb-lg-0" src="img/sch.png" alt="">
+                </div>
+                <div class="col-lg-7">
+                    <h1 class="mb-4">Student Information System (SIS)</h1>
+                    <div class="row pt-2 pb-4">
+                        <div class="col-6 col-md-8">
+                            <ul class="list-inline m-0">
+                                <li class="py-2 border-top border-bottom"><i class="fa fa-check text-primary mr-3"></i>Manage all users in one system: Students, parents, teachers and admin staff</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Data migration service included to import all students and parents using excel sheet</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Gain 360° view of a student on the Student Profile page that displays personal information and auto-captures activity and lesson history, deposits, invoices and payments</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Set user access rights and privileges across a single or multi-outlet setup</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Auto-generate logins for Student and Parent Portals to show respective lessons, invoices, attendance and reports</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <a href="" class="btn btn-primary mt-2 py-2 px-4">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5">
+                    <img class="img-fluid rounded mb-5 mb-lg-0" src="img/dashboard.png" alt="">
+                </div>
+                <div class="col-lg-7">
+                    <h1 class="mb-4">Customizable Management Dashboard</h1>
+                    <div class="row pt-2 pb-4">
+                        <div class="col-6 col-md-8">
+                            <ul class="list-inline m-0">
+                                <li class="py-2 border-top border-bottom"><i class="fa fa-check text-primary mr-3"></i>Management real-time data update </li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Easy data search</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Auto-update invoice for next month/term if student is enrolled in an additional subject/class</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <a href="" class="btn btn-primary mt-2 py-2 px-4">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Features End -->
+    <!-- About Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <p class="section-title pr-5"><span class="pr-2">Learn About SchEdu</span></p>
+                    <h1 class="mb-4"></h1>
+                    <img class="img-fluid rounded mb-5 mb-lg-0" src="img/page.png" alt="">
+                    <p>
+                        The Schedule School Management System isn't just a portfolio project; it's a collective desire to 
+                        revolutionize the way schools operate. As a team, we've felt the frustrations of data mismanagement, 
+                        sky-high administrative costs, and the tediousness of tasks like slow registrations process and misplaced files. 
+                        That's why we've come together with a shared vision: to create a solution that transforms the educational sector.
+                        <p>Imagine a registration process so smooth, it's practically effortless. Say goodbye to hunting down misplaced files and endless document queries; 
+                        our system keeps everything tidy and accessible. 
+                        And forget fumbling with cash during payments—we streamline transactions for added security and speed.</p>
+                        <p>
+                            Our passion for efficiency and commitment to excellence drive us forward. We're not just building software; 
+                            we're crafting a tool that empowers schools to focus on what truly matters: education.
+                            
+                        <p>
+                            As this is just the beginning of our inspiration, join us on this journey as we pave the way for a future where 
+                            administrative burdens are a thing of the past, and educational endeavors flourish like never before.
+                        </p>
+                        <a href="https://github.com/iAdamo/Schedu" class="section-title pr-5"><span class="pr-2"><em>View SchEdu source code</em></span></a>
+                    
+                        </p>
+
+
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    <!-- Class Start -->
+    <!--<div class="container-fluid pt-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <p class="section-title px-5"><span class="px-2">Popular Classes</span></p>
+                <h1 class="mb-4">Classes for Your Kids</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mb-5">
+                    <div class="card border-0 bg-light shadow-sm pb-2">
+                        <img class="card-img-top mb-2" src="img/class-1.jpg" alt="">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Drawing Class</h4>
+                            <p class="card-text">Justo ea diam stet diam ipsum no sit, ipsum vero et et diam ipsum duo et no et, ipsum ipsum erat duo amet clita duo</p>
+                        </div>
+                        <div class="card-footer bg-transparent py-4 px-5">
+                            <div class="row border-bottom">
+                                <div class="col-6 py-1 text-right border-right"><strong>Age of Kids</strong></div>
+                                <div class="col-6 py-1">3 - 6 Years</div>
+                            </div>
+                            <div class="row border-bottom">
+                                <div class="col-6 py-1 text-right border-right"><strong>Total Seats</strong></div>
+                                <div class="col-6 py-1">40 Seats</div>
+                            </div>
+                            <div class="row border-bottom">
+                                <div class="col-6 py-1 text-right border-right"><strong>Class Time</strong></div>
+                                <div class="col-6 py-1">08:00 - 10:00</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 py-1 text-right border-right"><strong>Tution Fee</strong></div>
+                                <div class="col-6 py-1">$290 / Month</div>
+                            </div>
+                        </div>
+                        <a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-5">
+                    <div class="card border-0 bg-light shadow-sm pb-2">
+                        <img class="card-img-top mb-2" src="img/class-2.jpg" alt="">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Language Learning</h4>
+                            <p class="card-text">Justo ea diam stet diam ipsum no sit, ipsum vero et et diam ipsum duo et no et, ipsum ipsum erat duo amet clita duo</p>
+                        </div>
+                        <div class="card-footer bg-transparent py-4 px-5">
+                            <div class="row border-bottom">
+                                <div class="col-6 py-1 text-right border-right"><strong>Age of Kids</strong></div>
+                                <div class="col-6 py-1">3 - 6 Years</div>
+                            </div>
+                            <div class="row border-bottom">
+                                <div class="col-6 py-1 text-right border-right"><strong>Total Seats</strong></div>
+                                <div class="col-6 py-1">40 Seats</div>
+                            </div>
+                            <div class="row border-bottom">
+                                <div class="col-6 py-1 text-right border-right"><strong>Class Time</strong></div>
+                                <div class="col-6 py-1">08:00 - 10:00</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 py-1 text-right border-right"><strong>Tution Fee</strong></div>
+                                <div class="col-6 py-1">$290 / Month</div>
+                            </div>
+                        </div>
+                        <a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-5">
+                    <div class="card border-0 bg-light shadow-sm pb-2">
+                        <img class="card-img-top mb-2" src="img/class-3.jpg" alt="">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Basic Science</h4>
+                            <p class="card-text">Justo ea diam stet diam ipsum no sit, ipsum vero et et diam ipsum duo et no et, ipsum ipsum erat duo amet clita duo</p>
+                        </div>
+                        <div class="card-footer bg-transparent py-4 px-5">
+                            <div class="row border-bottom">
+                                <div class="col-6 py-1 text-right border-right"><strong>Age of Kids</strong></div>
+                                <div class="col-6 py-1">3 - 6 Years</div>
+                            </div>
+                            <div class="row border-bottom">
+                                <div class="col-6 py-1 text-right border-right"><strong>Total Seats</strong></div>
+                                <div class="col-6 py-1">40 Seats</div>
+                            </div>
+                            <div class="row border-bottom">
+                                <div class="col-6 py-1 text-right border-right"><strong>Class Time</strong></div>
+                                <div class="col-6 py-1">08:00 - 10:00</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 py-1 text-right border-right"><strong>Tution Fee</strong></div>
+                                <div class="col-6 py-1">$290 / Month</div>
+                            </div>
+                        </div>
+                        <a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Class End -->
+
+
+    <!-- Registration Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 mb-5 mb-lg-0">
+                    <p class="section-title pr-5"><span class="pr-2">HOSTED ONLINE ON ZOOM</span></p>
+                    <h1 class="mb-4">Book a Free Demo Session</h1>
+                    <p>Who is it for: If you run an education centre or school with at least 50 
+                        students and you would like to completely systemise & grow your business, 
+                        increase its profits while working lesser hours…then this is for you.
+                        <p>In this session, we will cover:</p>
+                    </p>
+                    <ul class="list-inline m-0">
+                        <li class="py-2"><i class="fa fa-check text-success mr-3"></i>Live Demo of the SchEdu software
+
+                        </li>
+                        <li class="py-2"><i class="fa fa-check text-success mr-3"></i>Case studies of how our clients on average, save 60 hours of admin work per month, and handle 2X more students!</li>
+                        <li class="py-2"><i class="fa fa-check text-success mr-3"></i>How to tap into government grants to get the software for almost free (up to 95% funding)</li>
+                    </ul>
+                    <a href="" class="btn btn-primary mt-4 py-2 px-4">Book Now</a>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card border-0">
+                        <div class="card-header bg-secondary text-center p-4">
+                            <h1 class="text-white m-0">Book A Demo</h1>
+                            <h3 class="text-white m-0"></h3class>Fill out your School details below to book a personalised demo session</h3>
+                        </div>
+                        <div class="card-body rounded-bottom bg-primary p-5">
+                            <form>
+                                <div class="form-group">
+                                    <input type="text" class="form-control border-0 p-4" placeholder="Your Name" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control border-0 p-4" placeholder="Your Email" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="phone-number" class="form-control border-0 p-4" placeholder="Your Phone-number" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control border-0 p-4" placeholder="Your School name" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <select class="custom-select border-0 px-4" style="height: 47px;">
+                                        <option selected>Number of Students</option>
+                                        <option value="1">Below 50-100 students</option>
+                                        <option value="2">Below 100-200 students</option>
+                                        <option value="3">Below 200-300 students</option>
+                                        <option value="5">Below 300-400 students</option>
+                                        <option value="6">Below 400-500 students</option>
+                                        <option value="6">Below 500-above students</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <button class="btn btn-secondary btn-block border-0 py-3" type="submit">Book Now</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Registration End -->
+
+
+    <!-- Team Start -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <p class="section-title px-5"><span class="px-2">Our TeaM</span></p>
+                <h1 class="mb-4">Meet Our Team</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-lg-3 text-center team mb-5">
+                    <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
+                        <img class="img-fluid w-100" src="img/team-1.jpg" alt="" >
+                        <div
+                            class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
+                            <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                href="https://twitter.com/ilearnsoft"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                href="https://github.com/iAdamo"><i class="fab fa-github"></i></a>
+                            <a class="btn btn-outline-light text-center px-0" style="width: 38px; height: 38px;"
+                                href="https://www.linkedin.com/in/adamsanusi/"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <h4>Sanusi Adam Babatunde </h4>
+                    <i> Full stack Software Engineer
+                        <p>(Back-End)</p>
+                    </i>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center team mb-5">
+                    <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
+                        <img class="img-fluid w-100" src="img/team-3.jpg" alt="" >
+                        <div
+                            class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
+                            <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                href="https://twitter.com/HassanOlaoluwa1"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                href="https://github.com/Hassanyoung1"><i class="fab fa-github"></i></a>
+                            <a class="btn btn-outline-light text-center px-0" style="width: 38px; height: 38px;"
+                                href="https://www.linkedin.com/in/hassan-olaoluwa/"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <h4>Hassan Olaoluwa Hakeem</h4>
+                    <i>Full Stack Software Engineer</i>
+                    <p>(Back-End)</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center team mb-5">
+                    <div class="position-relative overflow-hidden mb-4" style="border-radius: 100%;">
+                        <img class="img-fluid w-100" src="img/team-2.jpeg" alt="" >
+                        <div
+                            class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
+                            <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                href="https://www.twitter.com/@quin_lyndha"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light text-center mr-2 px-0" style="width: 38px; height: 38px;"
+                                href="https://github.com/lyndha"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light text-center px-0" style="width: 38px; height: 38px;"
+                                href="https://www.linkedin.com/in/linda-nwachukwu-342823226"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <h4>Linda Nwachukwu Ihuoma</h4>
+                    <i>Full Stack Software Engineer</i>
+                    <p>(Front-End)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Team End -->
+
+
+    <!-- Testimonial Start -->
+    <!--<div class="container-fluid py-5">
+        <div class="container p-0">
+            <div class="text-center pb-2">
+                <p class="section-title px-5"><span class="px-2">Testimonial</span></p>
+                <h1 class="mb-4">What Parents Say!</h1>
+            </div>
+            <div class="owl-carousel testimonial-carousel">
+                <div class="testimonial-item px-3">
+                    <div class="bg-light shadow-sm rounded mb-4 p-4">
+                        <h3 class="fas fa-quote-left text-primary mr-3"></h3>
+                        Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum clita
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <img class="rounded-circle" src="img/testimonial-1.jpg" style="width: 70px; height: 70px;" alt="Image">
+                        <div class="pl-3">
+                            <h5>Parent Name</h5>
+                            <i>Profession</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item px-3">
+                    <div class="bg-light shadow-sm rounded mb-4 p-4">
+                        <h3 class="fas fa-quote-left text-primary mr-3"></h3>
+                        Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum clita
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <img class="rounded-circle" src="img/testimonial-2.jpg" style="width: 70px; height: 70px;" alt="Image">
+                        <div class="pl-3">
+                            <h5>Parent Name</h5>
+                            <i>Profession</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item px-3">
+                    <div class="bg-light shadow-sm rounded mb-4 p-4">
+                        <h3 class="fas fa-quote-left text-primary mr-3"></h3>
+                        Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum clita
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <img class="rounded-circle" src="img/testimonial-3.jpg" style="width: 70px; height: 70px;" alt="Image">
+                        <div class="pl-3">
+                            <h5>Parent Name</h5>
+                            <i>Profession</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item px-3">
+                    <div class="bg-light shadow-sm rounded mb-4 p-4">
+                        <h3 class="fas fa-quote-left text-primary mr-3"></h3>
+                        Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum clita
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <img class="rounded-circle" src="img/testimonial-4.jpg" style="width: 70px; height: 70px;" alt="Image">
+                        <div class="pl-3">
+                            <h5>Parent Name</h5>
+                            <i>Profession</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Testimonial End -->
+
+
+    <!-- Blog Start -->
+    <!--<div class="container-fluid pt-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <p class="section-title px-5"><span class="px-2">Latest Blog</span></p>
+                <h1 class="mb-4">Latest Articles From Blog</h1>
+            </div>
+            <div class="row pb-3">
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm mb-2">
+                        <img class="card-img-top mb-2" src="img/blog-1.jpg" alt="">
+                        <div class="card-body bg-light text-center p-4">
+                            <h4 class="">Diam amet eos at no eos</h4>
+                            <div class="d-flex justify-content-center mb-3">
+                                <small class="mr-3"><i class="fa fa-user text-primary"></i> Admin</small>
+                                <small class="mr-3"><i class="fa fa-folder text-primary"></i> Web Design</small>
+                                <small class="mr-3"><i class="fa fa-comments text-primary"></i> 15</small>
+                            </div>
+                            <p>Sed kasd sea sed at elitr sed ipsum justo, sit nonumy diam eirmod, duo et sed sit eirmod kasd clita tempor dolor stet lorem. Tempor ipsum justo amet stet...</p>
+                            <a href="" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm mb-2">
+                        <img class="card-img-top mb-2" src="img/blog-2.jpg" alt="">
+                        <div class="card-body bg-light text-center p-4">
+                            <h4 class="">Diam amet eos at no eos</h4>
+                            <div class="d-flex justify-content-center mb-3">
+                                <small class="mr-3"><i class="fa fa-user text-primary"></i> Admin</small>
+                                <small class="mr-3"><i class="fa fa-folder text-primary"></i> Web Design</small>
+                                <small class="mr-3"><i class="fa fa-comments text-primary"></i> 15</small>
+                            </div>
+                            <p>Sed kasd sea sed at elitr sed ipsum justo, sit nonumy diam eirmod, duo et sed sit eirmod kasd clita tempor dolor stet lorem. Tempor ipsum justo amet stet...</p>
+                            <a href="" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm mb-2">
+                        <img class="card-img-top mb-2" src="img/blog-3.jpg" alt="">
+                        <div class="card-body bg-light text-center p-4">
+                            <h4 class="">Diam amet eos at no eos</h4>
+                            <div class="d-flex justify-content-center mb-3">
+                                <small class="mr-3"><i class="fa fa-user text-primary"></i> Admin</small>
+                                <small class="mr-3"><i class="fa fa-folder text-primary"></i> Web Design</small>
+                                <small class="mr-3"><i class="fa fa-comments text-primary"></i> 15</small>
+                            </div>
+                            <p>Sed kasd sea sed at elitr sed ipsum justo, sit nonumy diam eirmod, duo et sed sit eirmod kasd clita tempor dolor stet lorem. Tempor ipsum justo amet stet...</p>
+                            <a href="" class="btn btn-primary px-4 mx-auto my-2">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Blog End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-secondary text-white mt-5 py-5 px-sm-3 px-md-5">
+        <div class="row pt-5">
+            <div class="col-lg-3 col-md-6 mb-5">
+                <a href="" class="navbar-brand font-weight-bold text-primary m-0 mb-4 p-0" style="font-size: 40px; line-height: 40px;">
+                    <span class="text-white">SchEdu</span>
+                </a>
+                <p>The innovative solution designed to simplify school management and revolutionize the way you organize your educational institution. With SCHEDU, managing your school's operations has never been easier.</p>
+                <div class="d-flex justify-content-start mt-4">
+                    <a class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+                        style="width: 38px; height: 38px;" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+                        style="width: 38px; height: 38px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+                        style="width: 38px; height: 38px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+                        style="width: 38px; height: 38px;" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h3 class="text-primary mb-4">Get In Touch</h3>
+                <div class="d-flex">
+                    <h4 class="fa fa-map-marker-alt text-primary"></h4>
+                    <div class="pl-3">
+                        <h5 class="text-white">Address</h5>
+                        <p>NIGERIA</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <h4 class="fa fa-envelope text-primary"></h4>
+                    <div class="pl-3">
+                        <h5 class="text-white">Email</h5>
+                        <p>thescheduteam@gmail.com</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <h4 class="fa fa-phone-alt text-primary"></h4>
+                    <div class="pl-3">
+                        <h5 class="text-white">Phone</h5>
+                        <p>+234 345 67890</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h3 class="text-primary mb-4">Quick Links</h3>
+                <div class="d-flex flex-column justify-content-start">
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                    <a class="text-white mb-2" href="https://github.com/iAdamo/Schedu"><i class="fa fa-angle-right mr-2"></i>About Us</a>
+                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Blog</a>
+                    <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h3 class="text-primary mb-4">Newsletter</h3>
+                <form action="">
+                    <div class="form-group">
+                        <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
+                            required="required" />
+                    </div>
+                    <div>
+                        <button class="btn btn-primary btn-block border-0 py-3" type="submit">Submit Now</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid pt-5" style="border-top: 1px solid rgba(23, 162, 184, .2);;">
+            <p class="m-0 text-center text-white">
+                &copy; <a class="text-primary font-weight-bold" href="#">schedu</a>. All Rights Reserved. Designed
+                by
+                <a class="text-primary font-weight-bold" href="https://schedu.tech">The Schedu Team</a>
+            </p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>
